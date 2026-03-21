@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import { motion } from "motion/react"
 import banner from "../assets/banner.jpg"
 import banner2 from "../assets/banner2.jpg"
 
@@ -173,37 +174,46 @@ export default function Home() {
           Artes visuales
         </h2>
 
-        {loadingVisualArts ? (
-          <p>Cargando artes visuales...</p>
-        ) : errorVisualArts ? (
-          <p>{errorVisualArts}</p>
-        ) : (
-          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 justify-items-center">
-            {visualArts.map((art) => (
-              <article key={art.id} className="flex flex-col items-center">
-                <img
-                  src={`http://localhost:8080${art.imageUrl}`}
-                  alt={art.category}
-                  className="mb-3 h-[320px] w-[220px] object-cover"
-                />
+       {loadingVisualArts ? (
+  <p>Cargando artes visuales...</p>
+) : errorVisualArts ? (
+  <p>{errorVisualArts}</p>
+) : (
+  <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 justify-items-center">
+    {visualArts.map((art) => (
+      <motion.article
+        key={art.id}
+        className="flex flex-col items-center"
+        whileHover={{ y: -4 }}
+        transition={{ duration: 0.25 }}
+      >
+        <div className="mb-3 h-[320px] w-[220px] overflow-hidden">
+          <motion.img
+            src={`http://localhost:8080${art.imageUrl}`}
+            alt={art.category}
+            className="h-full w-full object-cover"
+            whileHover={{ scale: 1.08 }}
+            transition={{ duration: 0.35, ease: "easeOut" }}
+          />
+        </div>
 
-                <h3 className="text-center text-sm font-medium text-neutral-900">
-                  {art.category}
-                </h3>
+        <h3 className="text-center text-sm font-medium text-neutral-900">
+          {art.category}
+        </h3>
 
-                <p className="text-center text-xs text-neutral-700">
-                  {new Date(art.publicationDate)
-                    .toLocaleDateString("es-ES", {
-                      day: "numeric",
-                      month: "long",
-                      year: "numeric",
-                    })
-                    .replace(/^./, (letter) => letter.toUpperCase())}
-                </p>
-              </article>
-            ))}
-          </div>
-        )}
+        <p className="text-center text-xs text-neutral-700">
+          {new Date(art.publicationDate)
+            .toLocaleDateString("es-ES", {
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+            })
+            .replace(/^./, (letter) => letter.toUpperCase())}
+        </p>
+      </motion.article>
+    ))}
+  </div>
+)}
       </section>
     </main>
   )
