@@ -16,7 +16,7 @@ export default function Navbar() {
             <div className="grid grid-cols-3 items-center border-b border-gray-200 px-6 py-8">
                 <div></div>
 
-                <h1 className="text-center text-5xl font-light tracking-[0.2em] text-neutral-900">
+                <h1 className="text-center text-5xl font-light tracking-[0.2em] text-neutral-800">
                     <Link to="/" className="hover:opacity-70">
                         MARVARIABLE
                     </Link>

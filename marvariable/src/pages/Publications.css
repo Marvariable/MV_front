@@ -1,0 +1,50 @@
+.publications-container {
+  padding: 40px;
+}
+
+.publications-list {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.publication-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+  max-width: 900px;
+}
+
+.publication-image {
+  width: 170px;
+  height: 170px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.publication-content {
+  display: flex;
+  flex-direction: column;
+}
+
+h1{
+  font-size: 30px;
+  font-weight: 700;
+  margin: 0 0 12px 0;
+}
+
+.publication-description {
+  font-size: 16px;
+  line-height: 1.5;
+  margin: 0 0 16px 0;
+}
+
+.publication-category {
+  font-size: 16px;
+  margin: 0 0 8px 0;
+}
+
+.publication-date {
+  font-size: 16px;
+  margin: 0;
+}
