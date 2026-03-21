@@ -45,7 +45,6 @@ function Publications() {
                 alt={publication.title}
                 className="publication-image"
               />
-
               <div className="publication-content">
                 <h1 className="publication-title">{publication.title}</h1>
 
@@ -54,11 +53,11 @@ function Publications() {
                 </p>
 
                 <p className="publication-category">
-                 <strong>Categoría:</strong>{publication.category}
+                  <strong>Categoría:</strong> {publication.category}
                 </p>
 
                 <p className="publication-date">
-                  <strong>Fecha de publicación :</strong>{publication.publication.date}
+                  <strong>Fecha de publicación:</strong> {publication.publicationDate}
                 </p>
               </div>
             </article>
