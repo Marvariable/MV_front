@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { motion } from "motion/react"
+import "./Home.css"
 import banner from "../assets/banner.jpg"
 import banner2 from "../assets/banner2.jpg"
 
@@ -91,39 +92,35 @@ export default function Home() {
   }, [])
 
   return (
-    <main className="w-full bg-[#f3f3f3]">
-      <section className="w-full">
+    <main className="home-page">
+      <section className="home-banner-section">
         <img
           src={banner}
           alt="Banner principal"
-          className="h-[300px] w-full object-cover"
+          className="home-banner-image"
         />
       </section>
 
-      <section className="px-10 py-10">
-        <h2 className="mb-8 text-2xl font-bold uppercase text-neutral-900">
-          Textos recientes
-        </h2>
+      <section className="home-section">
+        <h2 className="home-section-title">Textos recientes</h2>
 
         {loadingRecentTexts ? (
-          <p>Cargando textos recientes...</p>
+          <p className="home-message">Cargando textos recientes...</p>
         ) : errorRecentTexts ? (
-          <p>{errorRecentTexts}</p>
+          <p className="home-message">{errorRecentTexts}</p>
         ) : (
-          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4 justify-items-center">
+          <div className="recent-grid">
             {recentTexts.map((text) => (
-              <article key={text.id} className="flex w-[220px] flex-col items-center">
+              <article key={text.id} className="recent-card">
                 <img
                   src={`http://localhost:8080${text.imageUrl}`}
                   alt={text.title}
-                  className="mb-3 h-[180px] w-[220px] object-cover"
+                  className="recent-image"
                 />
 
-                <h3 className="text-center text-sm font-medium text-neutral-900">
-                  {text.title}
-                </h3>
+                <h3 className="recent-title">{text.title}</h3>
 
-                <p className="text-center text-xs text-neutral-700">
+                <p className="recent-date">
                   {new Date(text.publicationDate)
                     .toLocaleDateString("es-ES", {
                       day: "numeric",
@@ -139,81 +136,71 @@ export default function Home() {
       </section>
 
       <section
-        className="w-full min-h-[500px] bg-cover bg-center"
+        className="books-section"
         style={{ backgroundImage: `url(${banner2})` }}
       >
-        <div className="min-h-[500px] bg-white/25 px-10 py-12">
-          <h2 className="mb-12 text-2xl font-bold uppercase text-neutral-900">
-            Libros publicados
-          </h2>
+        <div className="books-overlay">
+          <h2 className="home-section-title">Libros publicados</h2>
 
-          <div className="mx-auto grid max-w-[820px] grid-cols-2 gap-x-16 gap-y-10">
+          <div className="books-grid">
             {publishedBooks.map((book) => (
-              <article key={book.id} className="flex flex-col items-center">
+              <article key={book.id} className="book-card">
                 <img
                   src={book.image}
                   alt={book.title}
-                  className="mb-3 h-[360px] w-[280px] object-cover shadow-md"
+                  className="book-image"
                 />
 
-                <h3 className="text-center text-sm font-medium text-neutral-900">
-                  {book.title}
-                </h3>
+                <h3 className="book-title">{book.title}</h3>
 
-                <p className="text-center text-xs text-neutral-700">
-                  {book.date}
-                </p>
+                <p className="book-date">{book.date}</p>
               </article>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="px-10 py-10">
-        <h2 className="mb-8 text-2xl font-bold uppercase text-neutral-900">
-          Artes visuales
-        </h2>
+      <section className="home-section">
+        <h2 className="home-section-title">Artes visuales</h2>
 
-       {loadingVisualArts ? (
-  <p>Cargando artes visuales...</p>
-) : errorVisualArts ? (
-  <p>{errorVisualArts}</p>
-) : (
-  <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 justify-items-center">
-    {visualArts.map((art) => (
-      <motion.article
-        key={art.id}
-        className="flex flex-col items-center"
-        whileHover={{ y: -4 }}
-        transition={{ duration: 0.25 }}
-      >
-        <div className="mb-3 h-[320px] w-[220px] overflow-hidden">
-          <motion.img
-            src={`http://localhost:8080${art.imageUrl}`}
-            alt={art.category}
-            className="h-full w-full object-cover"
-            whileHover={{ scale: 1.08 }}
-            transition={{ duration: 0.35, ease: "easeOut" }}
-          />
-        </div>
+        {loadingVisualArts ? (
+          <p className="home-message">Cargando artes visuales...</p>
+        ) : errorVisualArts ? (
+          <p className="home-message">{errorVisualArts}</p>
+        ) : (
+          <div className="visual-grid">
+            {visualArts.map((art) => (
+              <motion.article
+                key={art.id}
+                className="visual-card"
+                whileHover={{ y: -4 }}
+                transition={{ duration: 0.25 }}
+              >
+                <div className="visual-image-wrapper">
+                  <motion.img
+                    src={`http://localhost:8080${art.imageUrl}`}
+                    alt={art.category}
+                    className="visual-image"
+                    whileHover={{ scale: 1.08 }}
+                    transition={{ duration: 0.35, ease: "easeOut" }}
+                  />
+                </div>
 
-        <h3 className="text-center text-sm font-medium text-neutral-900">
-          {art.category}
-        </h3>
+                <h3 className="visual-title">{art.category}</h3>
 
-        <p className="text-center text-xs text-neutral-700">
-          {new Date(art.publicationDate)
-            .toLocaleDateString("es-ES", {
-              day: "numeric",
-              month: "long",
-              year: "numeric",
-            })
-            .replace(/^./, (letter) => letter.toUpperCase())}
-        </p>
-      </motion.article>
-    ))}
-  </div>
-)}
+                <p className="visual-date">
+                  {new Date(art.publicationDate)
+                    .toLocaleDateString("es-ES", {
+                      day: "numeric",
+                      month: "long",
+                      year: "numeric",
+                    })
+                    .replace(/^./, (letter) => letter.toUpperCase())}
+                </p>
+              </motion.article>
+            ))}
+          </div>
+        )}
       </section>
     </main>
   )
