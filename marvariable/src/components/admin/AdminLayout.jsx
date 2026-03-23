@@ -1,79 +1,31 @@
-const BASE_URL = "http://localhost:8080/api/publications";
+import { Link, Outlet } from "react-router-dom";
 
-export async function getPublications(filters = {}) {
-  const params = new URLSearchParams();
+export default function AdminLayout() {
+  return (
+    <div className="min-h-screen flex bg-slate-100">
+      <aside className="w-64 bg-white border-r border-slate-200 p-6">
+        <h1 className="text-2xl font-bold mb-8">Panel Admin</h1>
 
-  if (filters.title) {
-    params.append("title", filters.title);
-  }
+        <nav className="flex flex-col gap-3">
+          <Link
+            to="/admin/publicaciones"
+            className="px-3 py-2 rounded-lg hover:bg-slate-100"
+          >
+            Publicaciones
+          </Link>
 
-  if (filters.publicationDate) {
-    params.append("publicationDate", filters.publicationDate);
-  }
+          <Link
+            to="/admin/publicaciones/nueva"
+            className="px-3 py-2 rounded-lg hover:bg-slate-100"
+          >
+            Nueva publicación
+          </Link>
+        </nav>
+      </aside>
 
-  const url = params.toString()
-    ? `${BASE_URL}?${params.toString()}`
-    : BASE_URL;
-
-  const response = await fetch(url);
-
-  if (!response.ok) {
-    throw new Error("Error al obtener las publicaciones");
-  }
-
-  return response.json();
-}
-
-export async function getPublicationById(id) {
-  const response = await fetch(`${BASE_URL}/${id}`);
-
-  if (!response.ok) {
-    throw new Error("Error al obtener la publicación");
-  }
-
-  return response.json();
-}
-
-export async function createPublication(publicationData) {
-  const response = await fetch(BASE_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(publicationData),
-  });
-
-  if (!response.ok) {
-    throw new Error("Error al crear la publicación");
-  }
-
-  return response.json();
-}
-
-export async function updatePublication(id, publicationData) {
-  const response = await fetch(`${BASE_URL}/${id}`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(publicationData),
-  });
-
-  if (!response.ok) {
-    throw new Error("Error al actualizar la publicación");
-  }
-
-  return response.json();
-}
-
-export async function deletePublication(id) {
-  const response = await fetch(`${BASE_URL}/${id}`, {
-    method: "DELETE",
-  });
-
-  if (!response.ok) {
-    throw new Error("Error al eliminar la publicación");
-  }
-
-  return true;
+      <main className="flex-1 p-8">
+        <Outlet />
+      </main>
+    </div>
+  );
 }
