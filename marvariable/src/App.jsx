@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom"
+import { BrowserRouter, Routes, Route } from "react-router-dom"
 import Navbar from "./components/Navbar"
 import Home from "./pages/Home"
 import Publications from "./pages/Publications"
@@ -8,6 +8,10 @@ import Theater from "./pages/Theater";
 import Rhumor from "./pages/Rhumor"
 import AboutAuthor from "./pages/AboutAuthor"
 import Contact from "./pages/Contact"
+import AdminRegister from "./pages/AdminRegister"
+
+
+
 
 function App() {
   return (
@@ -23,6 +27,8 @@ function App() {
         <Route path="/rhumor" element={<Rhumor />} />
         <Route path="/about-author" element={<AboutAuthor />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/admin-register" element={<AdminRegister />} />
+        
       </Routes>
     </div>
   )

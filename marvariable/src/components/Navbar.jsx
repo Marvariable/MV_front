@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom"
 
+
+
 const menuItems = [
     { label: "OBRAS PUBLICADAS", path: "/publications" },
     { label: "TEORÍA", path: "/theory" },
@@ -23,26 +25,22 @@ export default function Navbar() {
                 </h1>
 
                 <div className="flex items-center justify-end gap-3">
-                    <button
-                        type="button"
-                        aria-label="Perfil"
-                        className="text-neutral-900 hover:opacity-70"
-                    >
+                    <Link to="/admin-register" className="hover:opacity-70">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
                             viewBox="0 0 24 24"
-                            strokeWidth="1.8"
+                            strokeWidth={1.5}
                             stroke="currentColor"
-                            className="h-5 w-5"
+                            className="h-8 w-8 text-neutral-800"
                         >
                             <path
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
-                                d="M15.75 6.75a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.5 19.5a7.5 7.5 0 0 1 15 0"
+                                d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.964 0a9 9 0 1 0-11.964 0m11.964 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275"
                             />
                         </svg>
-                    </button>
+                    </Link>
 
                     <button
                         type="button"
