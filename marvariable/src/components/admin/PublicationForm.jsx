@@ -33,7 +33,7 @@ export default function PublicationForm({
   return (
     <form
       onSubmit={handleSubmit}
-      className="bg-white rounded-2xl shadow p-6 space-y-5 max-w-3xl"
+      className="bg-white rounded-2xl shadow-sm border border-[#E7DED5] p-6 space-y-5 max-w-3xl"
     >
       <div>
         <label className="block mb-1 font-medium">Título</label>
@@ -42,18 +42,18 @@ export default function PublicationForm({
           name="title"
           value={formData.title}
           onChange={handleChange}
-          className="w-full border border-slate-300 rounded-lg px-3 py-2"
+         className="w-full border border-[#E7DED5] rounded-xl px-3 py-2 text-[#1F2937] bg-white focus:outline-none focus:ring-2 focus:ring-[#7B1E2B] focus:border-[#7B1E2B]"
           required
         />
       </div>
 
       <div>
-        <label className="block mb-1 font-medium">Descripción</label>
+        <label className="block mb-1 font-medium text-[#1F2937]">Descripción</label>
         <textarea
           name="description"
           value={formData.description}
           onChange={handleChange}
-          className="w-full border border-slate-300 rounded-lg px-3 py-2 min-h-32"
+          className="w-full border border-[#E7DED5] rounded-xl px-3 py-2 text-[#1F2937] bg-white focus:outline-none focus:ring-2 focus:ring-[#7B1E2B] focus:border-[#7B1E2B]"
           required
         />
       </div>
@@ -65,7 +65,7 @@ export default function PublicationForm({
           name="publicationDate"
           value={formData.publicationDate}
           onChange={handleChange}
-          className="w-full border border-slate-300 rounded-lg px-3 py-2"
+          className="w-full border border-[#E7DED5] rounded-xl px-3 py-2 text-[#1F2937] bg-white focus:outline-none focus:ring-2 focus:ring-[#7B1E2B] focus:border-[#7B1E2B]"
           required
         />
       </div>
@@ -77,7 +77,7 @@ export default function PublicationForm({
           name="imageUrl"
           value={formData.imageUrl}
           onChange={handleChange}
-          className="w-full border border-slate-300 rounded-lg px-3 py-2"
+        className="w-full border border-[#E7DED5] rounded-xl px-3 py-2 text-[#1F2937] bg-white focus:outline-none focus:ring-2 focus:ring-[#7B1E2B] focus:border-[#7B1E2B]"
           placeholder="/img/obra.jpg o https://..."
         />
       </div>
@@ -89,7 +89,7 @@ export default function PublicationForm({
           name="category"
           value={formData.category}
           onChange={handleChange}
-          className="w-full border border-slate-300 rounded-lg px-3 py-2"
+         className="w-full border border-[#E7DED5] rounded-xl px-3 py-2 text-[#1F2937] bg-white focus:outline-none focus:ring-2 focus:ring-[#7B1E2B] focus:border-[#7B1E2B]"
           required
         />
       </div>
@@ -100,7 +100,7 @@ export default function PublicationForm({
           name="status"
           value={formData.status}
           onChange={handleChange}
-          className="w-full border border-slate-300 rounded-lg px-3 py-2"
+         className="w-full border border-[#E7DED5] rounded-xl px-3 py-2 text-[#1F2937] bg-white focus:outline-none focus:ring-2 focus:ring-[#7B1E2B] focus:border-[#7B1E2B]"
           required
         >
           <option value="DRAFT">Borrador</option>
@@ -115,7 +115,7 @@ export default function PublicationForm({
           name="link"
           value={formData.link}
           onChange={handleChange}
-          className="w-full border border-slate-300 rounded-lg px-3 py-2"
+          className="w-full border border-[#E7DED5] rounded-xl px-3 py-2 text-[#1F2937] bg-white focus:outline-none focus:ring-2 focus:ring-[#7B1E2B] focus:border-[#7B1E2B]"
           placeholder="https://..."
         />
       </div>
@@ -123,7 +123,7 @@ export default function PublicationForm({
       <button
         type="submit"
         disabled={loading}
-        className="bg-black text-white px-5 py-2 rounded-lg disabled:opacity-50"
+       className="w-full border border-[#E7DED5] rounded-xl px-3 py-2 text-[#1F2937] bg-white focus:outline-none focus:ring-2 focus:ring-[#7B1E2B] focus:border-[#7B1E2B]"
       >
         {loading ? "Guardando..." : submitText}
       </button>
