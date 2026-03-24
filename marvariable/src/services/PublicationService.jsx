@@ -77,3 +77,23 @@ export async function deletePublication(id) {
 
   return true;
 }
+
+export async function getPublicationsBySection(section) {
+  const response = await fetch(`${BASE_URL}/section/${section}`);
+
+  if (!response.ok) {
+    throw new Error("Error al obtener publicaciones por sección");
+  }
+
+  return response.json();
+}
+
+export async function getHomeSelectedPublications() {
+  const response = await fetch(`${BASE_URL}/home-selected`);
+
+  if (!response.ok) {
+    throw new Error("Error al obtener publicaciones del home");
+  }
+
+  return response.json();
+}

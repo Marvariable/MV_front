@@ -9,21 +9,24 @@ export default function PublicationForm({
     category: "",
     status: "DRAFT",
     link: "",
+    section: "OBRAS_PUBLICADAS",
+    showInHome: false,
+
   },
   onSubmit,
   loading = false,
   submitText = "Guardar",
 }) {
   const [formData, setFormData] = useState(initialData);
+  
+function handleChange(event) {
+  const { name, value, type, checked } = event.target;
 
-  function handleChange(event) {
-    const { name, value } = event.target;
-
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  }
+  setFormData((prev) => ({
+    ...prev,
+    [name]: type === "checkbox" ? checked : value,
+  }));
+}
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -42,7 +45,7 @@ export default function PublicationForm({
           name="title"
           value={formData.title}
           onChange={handleChange}
-         className="w-full border border-[#E7DED5] rounded-xl px-3 py-2 text-[#1F2937] bg-white focus:outline-none focus:ring-2 focus:ring-[#7B1E2B] focus:border-[#7B1E2B]"
+          className="w-full border border-[#E7DED5] rounded-xl px-3 py-2 text-[#1F2937] bg-white focus:outline-none focus:ring-2 focus:ring-[#7B1E2B] focus:border-[#7B1E2B]"
           required
         />
       </div>
@@ -77,7 +80,7 @@ export default function PublicationForm({
           name="imageUrl"
           value={formData.imageUrl}
           onChange={handleChange}
-        className="w-full border border-[#E7DED5] rounded-xl px-3 py-2 text-[#1F2937] bg-white focus:outline-none focus:ring-2 focus:ring-[#7B1E2B] focus:border-[#7B1E2B]"
+          className="w-full border border-[#E7DED5] rounded-xl px-3 py-2 text-[#1F2937] bg-white focus:outline-none focus:ring-2 focus:ring-[#7B1E2B] focus:border-[#7B1E2B]"
           placeholder="/img/obra.jpg o https://..."
         />
       </div>
@@ -89,7 +92,7 @@ export default function PublicationForm({
           name="category"
           value={formData.category}
           onChange={handleChange}
-         className="w-full border border-[#E7DED5] rounded-xl px-3 py-2 text-[#1F2937] bg-white focus:outline-none focus:ring-2 focus:ring-[#7B1E2B] focus:border-[#7B1E2B]"
+          className="w-full border border-[#E7DED5] rounded-xl px-3 py-2 text-[#1F2937] bg-white focus:outline-none focus:ring-2 focus:ring-[#7B1E2B] focus:border-[#7B1E2B]"
           required
         />
       </div>
@@ -100,7 +103,7 @@ export default function PublicationForm({
           name="status"
           value={formData.status}
           onChange={handleChange}
-         className="w-full border border-[#E7DED5] rounded-xl px-3 py-2 text-[#1F2937] bg-white focus:outline-none focus:ring-2 focus:ring-[#7B1E2B] focus:border-[#7B1E2B]"
+          className="w-full border border-[#E7DED5] rounded-xl px-3 py-2 text-[#1F2937] bg-white focus:outline-none focus:ring-2 focus:ring-[#7B1E2B] focus:border-[#7B1E2B]"
           required
         >
           <option value="DRAFT">Borrador</option>
@@ -120,10 +123,41 @@ export default function PublicationForm({
         />
       </div>
 
+      <div>
+        <label className="block mb-1 font-medium text-[#1F2937]">
+          Sección
+        </label>
+
+        <select
+          name="section"
+          value={formData.section}
+          onChange={handleChange}
+          className="w-full border border-[#E7DED5] rounded-xl px-3 py-2 text-[#1F2937] bg-white focus:outline-none focus:ring-2 focus:ring-[#7B1E2B] focus:border-[#7B1E2B]"
+        >
+          <option value="OBRAS_PUBLICADAS">Obras publicadas</option>
+          <option value="TEORIA">Teoría</option>
+          <option value="NARRATIVA">Narrativa</option>
+          <option value="TEATRO">Teatro</option>
+        </select>
+      </div>
+      <div className="flex items-center gap-3">
+        <input
+          type="checkbox"
+          name="showInHome"
+          checked={formData.showInHome}
+          onChange={handleChange}
+          className="h-4 w-4 rounded border-slate-300 text-[#7B1E2B] focus:ring-[#7B1E2B]"
+        />
+
+        <label className="font-medium text-[#1F2937]">
+          Mostrar esta publicación en Home
+        </label>
+      </div>
+
       <button
         type="submit"
         disabled={loading}
-       className="w-full border border-[#E7DED5] rounded-xl px-3 py-2 text-[#1F2937] bg-white focus:outline-none focus:ring-2 focus:ring-[#7B1E2B] focus:border-[#7B1E2B]"
+        className="w-full border border-[#E7DED5] rounded-xl px-3 py-2 text-[#1F2937] bg-white focus:outline-none focus:ring-2 focus:ring-[#7B1E2B] focus:border-[#7B1E2B]"
       >
         {loading ? "Guardando..." : submitText}
       </button>

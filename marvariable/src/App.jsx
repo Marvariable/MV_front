@@ -12,7 +12,6 @@ import Rhumor from "./pages/Rhumor";
 import AboutAuthor from "./pages/AboutAuthor";
 import Contact from "./pages/Contact";
 import AdminRegister from "./pages/AdminRegister";
-
 import PublicationsList from "./pages/admin/PublicationsList";
 import CreatePublication from "./pages/admin/CreatePublication";
 import EditPublication from "./pages/admin/EditPublication";
@@ -20,7 +19,7 @@ import EditPublication from "./pages/admin/EditPublication";
 function App() {
   return (
     <Routes>
-      {/* RUTAS PÚBLICAS */}
+    
       <Route element={<PublicLayout />}>
         <Route path="/" element={<Home />} />
         <Route path="/publications" element={<Publications />} />

@@ -48,7 +48,7 @@ export default function Home() {
   useEffect(() => {
     async function loadRecentTexts() {
       try {
-        const response = await fetch("http://localhost:8080/api/publications/recent")
+       const response = await fetch("http://localhost:8080/api/publications/home-selected")
 
         if (!response.ok) {
           throw new Error(`Error HTTP: ${response.status}`)
