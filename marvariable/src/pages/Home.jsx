@@ -13,25 +13,25 @@ const publishedBooks = [
   {
     id: 1,
     image: cover1,
-    title: "El pensamiento de Karl Marx",
+    title: "Ontologías Amerindias",
     date: "Marzo-14-2024",
   },
   {
     id: 2,
     image: cover2,
-    title: "El pensamiento de Karl Marx",
+    title: "La cuádruple temporalidad de los programas de transición",
     date: "Marzo-14-2024",
   },
   {
     id: 3,
     image: cover3,
-    title: "El pensamiento de Karl Marx",
+    title: "Tatuaje",
     date: "Marzo-14-2024",
   },
   {
     id: 4,
     image: cover4,
-    title: "El pensamiento de Karl Marx",
+    title: "El amargo del chocolate",
     date: "Marzo-14-2024",
   },
 ]

@@ -36,7 +36,7 @@ export default function Publications() {
 
   return (
     <section className="publications-container">
-       <h1 className="narrative-title"> C A R L O S R O J A S    / L  I Z L U I S Q U I R O G A / I   S   I   D     R      O    L   U   N   A / R  H  U M O R  </h1>
+      
 
     
       {publications.length === 0 ? (
@@ -54,7 +54,7 @@ export default function Publications() {
                 <h2 className="publication-title">{publication.title}</h2>
 
                 <p className="publication-description">
-                  <strong>Descripción:</strong> {publication.description}
+                  <strong>Fragmento:</strong> {publication.description}
                 </p>
 
                 <p className="publication-date">

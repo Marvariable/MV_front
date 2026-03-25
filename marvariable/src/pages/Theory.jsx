@@ -54,7 +54,7 @@ export default function Theory() {
                 <h2 className="publication-title">{publication.title}</h2>
 
                 <p className="publication-description">
-                  <strong>Descripción:</strong> {publication.description}
+                  <strong>Fragmento:</strong> {publication.description}
                 </p>
 
                 <p className="publication-date">

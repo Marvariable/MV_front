@@ -23,19 +23,14 @@ export default function AboutAuthor() {
           <div className="author-cinema-line"></div>
 
           <p className="author-cinema-bio">
-            Carlos Rojas desarrolla una obra atravesada por la reflexión, la
-            escena, la escritura y la imagen. Su trabajo se sitúa en un espacio
-            donde la sensibilidad estética y el pensamiento crítico dialogan de
-            manera constante.
+            Doctor en Estudios Culturales Latinoamericanos por la Universidad Andina Simón Bolívar (2012), Máster en Desarrollo Económico para América Latina por la Universidad Internacional de Andalucía (1998), Doctor en Medicina (1978) y Licenciado en Humanidades Modernas (1976).
+
+            Fue profesor en las universidades de Cuenca y del Azuay, en las áreas de filosofía, epistemología y estética. Ha desarrollado una amplia trayectoria como crítico de arte y curador de exposiciones nacionales e internacionales, además de ser miembro activo de la Asociación Internacional de Críticos de Arte (AICA, sección ecuatoriana).
+
+            Su trabajo combina la reflexión filosófica con la crítica cultural, abordando especialmente la ontología, la estética y el arte contemporáneo.
           </p>
 
-          <p className="author-cinema-bio">
-            Esta sección puede presentar su trayectoria, sus intereses
-            creativos, su universo literario y la relación entre sus textos y
-            las distintas áreas del proyecto: teoría, narrativa, teatro y obra
-            publicada.
-          </p>
-
+         
           <div className="author-cinema-quote">
             <span className="author-cinema-quote-mark">“</span>
             <p>

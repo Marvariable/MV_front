@@ -18,7 +18,7 @@
 }
 
 .home-section-title {
-  margin-bottom: 32px;
+  margin-bottom: 52px;
   font-size: 24px;
   font-weight: 700;
   text-transform: uppercase;
@@ -53,7 +53,7 @@
 
 .recent-title {
   text-align: center;
-  font-size: 14px;
+  font-size: 20px;
   font-weight: 500;
   color: #171717;
 }
@@ -92,7 +92,7 @@
 }
 
 .book-image {
-  margin-bottom: 12px;
+  margin-bottom: 32px;
   height: 360px;
   width: 280px;
   object-fit: cover;
@@ -101,14 +101,14 @@
 
 .book-title {
   text-align: center;
-  font-size: 14px;
+  font-size: 24px;
   font-weight: 500;
   color: #171717;
 }
 
 .book-date {
   text-align: center;
-  font-size: 12px;
+  font-size: 22px;
   color: #404040;
 }
 
@@ -126,7 +126,7 @@
 }
 
 .visual-image-wrapper {
-  margin-bottom: 12px;
+  margin-bottom: 2px;
   height: 320px;
   width: 220px;
   overflow: hidden;
@@ -140,14 +140,14 @@
 
 .visual-title {
   text-align: center;
-  font-size: 14px;
+  font-size: 24px;
   font-weight: 500;
   color: #171717;
 }
 
 .visual-date {
   text-align: center;
-  font-size: 12px;
+  font-size: 18px;
   color: #404040;
 }
 
