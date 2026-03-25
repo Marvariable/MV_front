@@ -36,7 +36,7 @@ export default function Theater() {
 
   return (
     <section className="publications-container">
-      <h1 className="publication-title">Teatro</h1>
+     <h1 className="theater-title"> I   S   I   D     R      O    L   U   N   A </h1>
 
       {publications.length === 0 ? (
         <p>No hay publicaciones de teatro todavía.</p>

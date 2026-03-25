@@ -36,7 +36,8 @@ export default function Theory() {
 
   return (
     <section className="publications-container">
-      <h1 className="publication-title">Teoría</h1>
+         <h1 className="theory-title"> C A R L O S R O J A S  </h1>
+
 
       {publications.length === 0 ? (
         <p>No hay publicaciones de teoría todavía.</p>

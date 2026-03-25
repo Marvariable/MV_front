@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import "./Publications.css";
+import "./Narrative.css";
 
 export default function Narrative() {
   const [publications, setPublications] = useState([]);
@@ -36,7 +36,7 @@ export default function Narrative() {
 
   return (
     <section className="publications-container">
-      <h1 className="publication-title">Narrativa</h1>
+       <h1 className="narrative-title"> L I Z L U I S Q U I R O G A  </h1>
 
       {publications.length === 0 ? (
         <p>No hay publicaciones de narrativa todavía.</p>

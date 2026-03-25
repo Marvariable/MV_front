@@ -36,8 +36,9 @@ export default function Publications() {
 
   return (
     <section className="publications-container">
-      <h1 className="publication-title">Obras publicadas</h1>
+       <h1 className="narrative-title"> C A R L O S R O J A S    / L  I Z L U I S Q U I R O G A / I   S   I   D     R      O    L   U   N   A / R  H  U M O R  </h1>
 
+    
       {publications.length === 0 ? (
         <p>No hay obras publicadas todavía.</p>
       ) : (
