@@ -1,0 +1,296 @@
+.author-cinema-page {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  background: #000;
+  color: white;
+  padding: 0;
+}
+
+/* ------------------------- */
+/* FONDO INICIAL NEGRO       */
+/* ------------------------- */
+.author-cinema-intro {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at center, rgba(255, 255, 255, 0.04), transparent 35%),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.95), rgba(10, 10, 10, 0.98));
+  z-index: 1;
+  animation: introFadeOut 1.4s ease 2.8s forwards;
+}
+
+/* ------------------------- */
+/* NOMBRE CENTRAL INICIAL    */
+/* ------------------------- */
+.author-cinema-main-name {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1);
+  transform-origin: left center;
+  font-size: clamp(3rem, 9vw, 8rem);
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  white-space: nowrap;
+  z-index: 20;
+  color: white;
+  opacity: 0;
+  pointer-events: none;
+  will-change: transform, top, left, opacity, filter;
+  animation:
+    mainNameAppear 1.2s ease-out 0.7s forwards,
+    mainNameMove 2.2s cubic-bezier(0.22, 1, 0.36, 1) 2.1s forwards;
+}
+
+/* ------------------------- */
+/* LAYOUT FINAL              */
+/* ------------------------- */
+.author-cinema-layout {
+  position: relative;
+  z-index: 3;
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 4rem;
+  padding: 6rem 5rem 6rem 5rem;
+}
+
+/* ------------------------- */
+/* TEXTO                     */
+/* ------------------------- */
+.author-cinema-text {
+  max-width: 650px;
+  opacity: 0;
+  transform: translateX(-60px);
+  animation: textRevealCinema 1.2s ease 3s forwards;
+}
+
+.author-cinema-tag {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: rgba(255, 255, 255, 0.72);
+  margin-bottom: 1rem;
+}
+
+.author-cinema-title {
+  font-size: clamp(2.2rem, 5vw, 4.8rem);
+  line-height: 1.02;
+  font-weight: 700;
+  margin: 0;
+  color: #f8f5ef;
+}
+
+.author-cinema-line {
+  width: 120px;
+  height: 3px;
+  background: linear-gradient(90deg, #ffffff, #7b1e2b);
+  border-radius: 999px;
+  margin: 1.5rem 0 2rem;
+}
+
+.author-cinema-bio {
+  font-size: 1.08rem;
+  line-height: 1.95;
+  color: rgba(255, 255, 255, 0.84);
+  margin-bottom: 1.4rem;
+}
+
+.author-cinema-quote {
+  margin-top: 2.2rem;
+  position: relative;
+  padding: 1.6rem 1.8rem 1.6rem 2rem;
+  background: rgba(255, 255, 255, 0.06);
+  border-left: 3px solid rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(8px);
+  max-width: 580px;
+}
+
+.author-cinema-quote-mark {
+  position: absolute;
+  top: -18px;
+  left: 12px;
+  font-size: 4rem;
+  color: rgba(255, 255, 255, 0.12);
+  line-height: 1;
+}
+
+.author-cinema-quote p {
+  margin: 0;
+  font-size: 1.02rem;
+  line-height: 1.85;
+  color: rgba(255, 255, 255, 0.88);
+  font-style: italic;
+}
+
+/* ------------------------- */
+/* FOTO                      */
+/* ------------------------- */
+.author-cinema-image-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transform: translateX(80px) scale(1.06);
+  animation: imageRevealCinema 1.4s ease 2.9s forwards;
+}
+
+.author-cinema-image {
+  width: min(100%, 520px);
+  height: auto;
+  display: block;
+  object-fit: cover;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+  border: 10px solid rgba(255, 255, 255, 0.08);
+  background: #111;
+}
+
+/* ------------------------- */
+/* ANIMACIONES               */
+/* ------------------------- */
+@keyframes mainNameAppear {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.92);
+    filter: blur(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes mainNameMove {
+  from {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+    filter: blur(0);
+  }
+  to {
+    top: calc(100vh - 165px);
+    left: 52px;
+    transform: translate(0, 0) scale(0.22);
+    opacity: 0.45;
+    filter: blur(0);
+  }
+}
+
+@keyframes introFadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.08;
+  }
+}
+
+@keyframes imageRevealCinema {
+  from {
+    opacity: 0;
+    transform: translateX(80px) scale(1.08);
+    filter: blur(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes textRevealCinema {
+  from {
+    opacity: 0;
+    transform: translateX(-60px);
+    filter: blur(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+    filter: blur(0);
+  }
+}
+
+/* ------------------------- */
+/* RESPONSIVE                */
+/* ------------------------- */
+@media (max-width: 1080px) {
+  .author-cinema-layout {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    padding: 7rem 2rem 5rem;
+  }
+
+  .author-cinema-text {
+    order: 2;
+  }
+
+  .author-cinema-image-wrapper {
+    order: 1;
+  }
+
+  .author-cinema-main-name {
+    letter-spacing: 0.12em;
+  }
+
+  @keyframes mainNameMove {
+    from {
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 1;
+      filter: blur(0);
+    }
+    to {
+      top: calc(100vh - 72px);
+      left: 32px;
+      transform: translate(0, 0) scale(0.36);
+      opacity: 0.45;
+      filter: blur(0);
+    }
+  }
+}
+
+@media (max-width: 640px) {
+  .author-cinema-layout {
+    padding: 6rem 1.2rem 4rem;
+  }
+
+  .author-cinema-main-name {
+    font-size: clamp(2.3rem, 11vw, 4.4rem);
+  }
+
+  .author-cinema-title {
+    font-size: clamp(2rem, 8vw, 3rem);
+  }
+
+  .author-cinema-bio {
+    font-size: 1rem;
+    line-height: 1.85;
+  }
+
+  .author-cinema-image {
+    border-width: 6px;
+  }
+
+  @keyframes mainNameMove {
+    from {
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 1;
+      filter: blur(0);
+    }
+    to {
+      top: calc(100vh - 58px);
+      left: 16px;
+      transform: translate(0, 0) scale(0.4);
+      opacity: 0.4;
+      filter: blur(0);
+    }
+  }
+}
