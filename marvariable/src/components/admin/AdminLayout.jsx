@@ -4,7 +4,15 @@ export default function AdminLayout() {
   return (
     <div className="min-h-screen flex bg-[#F5F1EC]">
       <aside className="w-64 bg-[#7B1E2B] text-white border-r border-[#651823] p-6">
-        <h1 className="text-2xl font-bold mb-8">Panel de Administración </h1>
+        <h1 className="text-2xl font-bold mb-8">Panel de Administración</h1>
+
+        <Link
+          to="/"
+          className="mb-6 flex items-center gap-2 rounded-xl bg-white/10 px-4 py-3 text-white hover:bg-white/20 transition"
+        >
+          <span className="text-lg"></span>
+          <span>Home</span>
+        </Link>
 
         <nav className="flex flex-col gap-3">
           <Link
