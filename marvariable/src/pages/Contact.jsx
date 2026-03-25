@@ -55,12 +55,12 @@ export default function Contact() {
           <div className="contact-art-info">
             <div className="contact-info-block">
               <span className="contact-info-label">Correo</span>
-              <p>carlosrojas@email.com</p>
+              <p>carlosrojas@gmail.com</p>
             </div>
 
             <div className="contact-info-block">
               <span className="contact-info-label">Ubicación</span>
-              <p>Barcelona / Madrid</p>
+              <p>Quito/ Ecuador</p>
             </div>
           </div>
         </div>
