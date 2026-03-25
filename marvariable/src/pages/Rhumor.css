@@ -1,0 +1,261 @@
+.rhumor-page {
+  min-height: 100vh;
+  background: #f3f0ea;
+  padding: 3rem 2rem 4rem;
+  color: #1f2937;
+}
+
+.rhumor-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #7b1e2b;
+  text-align: right;
+  margin-bottom: 2rem;
+  letter-spacing: 0.08em;
+}
+
+.rhumor-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #7b1e2b;
+  line-height: 1;
+  text-align: right;
+  letter-spacing: 0.09em;
+  margin: 0;
+  flex-shrink: 0;
+  position: sticky;
+  top: 2rem;
+  padding-left: 2rem;
+  animation: fadeSlideInRight 1s ease-out;
+}
+
+@keyframes fadeSlideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+.rhumor-title {
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #7b1e2b;
+  margin: 5px;
+}
+
+.rhumor-subtitle {
+  margin-top: 0.7rem;
+  font-size: 1rem;
+  color: #5b6470;
+  letter-spacing: 0.08em;
+}
+
+.rhumor-gallery {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 2rem 1.4rem;
+}
+
+.rhumor-card {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: fadeGalleryItems 0.8s ease both;
+  transition: transform 0.35s ease;
+}
+
+.rhumor-card:hover {
+  transform: translateY(-8px);
+}
+
+.rhumor-card-label {
+  font-size: 0.9rem;
+  color: #3b4450;
+  margin-bottom: 0.7rem;
+  letter-spacing: 0.04em;
+}
+
+.rhumor-thumb {
+  width: 100%;
+  max-width: 180px;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  display: block;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.14);
+  border: 6px solid #f8f5ef;
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+.rhumor-card:hover .rhumor-thumb {
+  transform: scale(1.03);
+  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.2);
+}
+
+.rhumor-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(25, 22, 18, 0.78);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  animation: fadeOverlay 0.35s ease;
+}
+
+.rhumor-lightbox-frame {
+  max-width: min(74vw, 900px);
+  max-height: 82vh;
+  padding: 1.2rem;
+  background: rgba(247, 243, 237, 0.95);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+  animation: zoomMuseum 0.4s ease;
+}
+
+.rhumor-lightbox-image {
+  display: block;
+  max-width: 100%;
+  max-height: 76vh;
+  object-fit: contain;
+}
+
+.rhumor-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: transparent;
+  color: #f8f5ef;
+  font-size: 3rem;
+  cursor: pointer;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+  opacity: 0.9;
+  padding: 0.4rem 0.8rem;
+}
+
+.rhumor-nav:hover {
+  transform: translateY(-50%) scale(1.08);
+  opacity: 1;
+}
+
+.rhumor-nav-left {
+  left: 2rem;
+}
+
+.rhumor-nav-right {
+  right: 2rem;
+}
+
+.rhumor-close {
+  position: absolute;
+  top: 1.5rem;
+  right: 2rem;
+  border: none;
+  background: transparent;
+  color: #f8f5ef;
+  font-size: 3rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+  opacity: 0.9;
+}
+
+.rhumor-close:hover {
+  transform: scale(1.08);
+  opacity: 1;
+}
+
+@keyframes fadeOverlay {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes zoomMuseum {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeGalleryItems {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeMuseumTitle {
+  from {
+    opacity: 0;
+    transform: translateY(-18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .rhumor-page {
+    padding: 2rem 1rem 3rem;
+  }
+
+  .rhumor-title {
+    font-size: 2.3rem;
+  }
+
+  .rhumor-gallery {
+    grid-template-columns: repeat(auto-fit, minmax(105px, 1fr));
+    gap: 1.5rem 1rem;
+  }
+
+  .rhumor-thumb {
+    max-width: 95px;
+  }
+
+  .rhumor-nav {
+    font-size: 2.3rem;
+  }
+
+  .rhumor-nav-left {
+    left: 0.5rem;
+  }
+
+  .rhumor-nav-right {
+    right: 0.5rem;
+  }
+
+  .rhumor-close {
+    top: 1rem;
+    right: 1rem;
+    font-size: 2.4rem;
+  }
+
+  .rhumor-lightbox-frame {
+    max-width: 86vw;
+    padding: 0.8rem;
+  }
+}
