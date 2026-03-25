@@ -29,7 +29,7 @@ export default function Contact() {
       <div className="contact-bg-word contact-bg-word-two">CONTACT</div>
 
       <div className="contact-art-wrapper">
-        {/* Lado izquierdo */}
+    
         <div className="contact-art-left">
           <p className="contact-art-tag">Contacto</p>
 
@@ -65,7 +65,6 @@ export default function Contact() {
           </div>
         </div>
 
-        {/* Lado derecho */}
         <div className="contact-art-right">
           <form onSubmit={handleSubmit} className="contact-art-form">
             <div className="contact-form-group">
