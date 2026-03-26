@@ -7,9 +7,6 @@
   padding: 0;
 }
 
-/* ------------------------- */
-/* FONDO INICIAL NEGRO       */
-/* ------------------------- */
 .author-cinema-intro {
   position: absolute;
   inset: 0;
@@ -20,9 +17,7 @@
   animation: introFadeOut 1.4s ease 2.8s forwards;
 }
 
-/* ------------------------- */
-/* NOMBRE CENTRAL INICIAL    */
-/* ------------------------- */
+
 .author-cinema-main-name {
   position: fixed;
   top: 50%;
@@ -43,9 +38,7 @@
     mainNameMove 2.2s cubic-bezier(0.22, 1, 0.36, 1) 2.1s forwards;
 }
 
-/* ------------------------- */
-/* LAYOUT FINAL              */
-/* ------------------------- */
+
 .author-cinema-layout {
   position: relative;
   z-index: 3;
@@ -57,9 +50,7 @@
   padding: 6rem 5rem 6rem 5rem;
 }
 
-/* ------------------------- */
-/* TEXTO                     */
-/* ------------------------- */
+
 .author-cinema-text {
   max-width: 650px;
   opacity: 0;
@@ -125,9 +116,6 @@
   font-style: italic;
 }
 
-/* ------------------------- */
-/* FOTO                      */
-/* ------------------------- */
 .author-cinema-image-wrapper {
   display: flex;
   justify-content: center;
@@ -147,9 +135,7 @@
   background: #111;
 }
 
-/* ------------------------- */
-/* ANIMACIONES               */
-/* ------------------------- */
+
 @keyframes mainNameAppear {
   from {
     opacity: 0;
@@ -215,9 +201,7 @@
   }
 }
 
-/* ------------------------- */
-/* RESPONSIVE                */
-/* ------------------------- */
+
 @media (max-width: 1080px) {
   .author-cinema-layout {
     grid-template-columns: 1fr;
