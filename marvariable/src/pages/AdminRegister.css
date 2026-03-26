@@ -1,52 +1,69 @@
 .admin-register-page {
   min-height: 100vh;
   width: 100%;
-  background-size: cover;
-  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center; 
+  padding: 40px 24px;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+
+  background-size: cover; 
+  background-position: center center;
   background-repeat: no-repeat;
 }
 
+.admin-register-page::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at left center, rgba(255, 240, 220, 0.12), transparent 30%),
+    radial-gradient(circle at right bottom, rgba(123, 63, 98, 0.12), transparent 28%);
+  pointer-events: none;
+}
+
 .admin-register-overlay {
-  min-height: 100vh;
-  width: 100%;
-  background: rgba(255, 255, 255, 0.72);
-  padding: 40px 60px;
+  position: relative;
+  z-index: 1;
+  width: min(100%, 620px);
+  padding: 56px 46px;
+  border-radius: 12px 34px 12px 34px;
+  background: rgba(245, 239, 231, 0.9);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: 1px solid rgba(120, 95, 72, 0.22);
+  box-shadow: 0 24px 50px rgba(23, 18, 15, 0.22);
   box-sizing: border-box;
 }
 
-.admin-register-form {
-  width: 100%;
-}
-
-.admin-register-content {
-  width: 100%;
-}
-
+.admin-register-form,
+.admin-register-content,
 .admin-register-section {
   width: 100%;
-  border-bottom: 1px solid rgba(17, 24, 39, 0.15);
-  padding-bottom: 40px;
 }
 
 .admin-register-title {
-  font-size: 18px;
+  margin: 0 0 10px 0;
+  font-family: "Georgia", "Times New Roman", serif;
+  font-size: clamp(2.5rem, 4vw, 3.3rem);
   font-weight: 700;
-  color: #111827;
-  margin: 0;
+  line-height: 1.05;
+  color: #231d19;
 }
 
 .admin-register-subtitle {
-  margin-top: 8px;
-  font-size: 15px;
-  color: #4b5563;
+  margin: 0 0 30px 0;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #65584d;
 }
 
 .admin-register-grid {
-  margin-top: 40px;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 32px 36px;
-  width: 100%;
+  grid-template-columns: 1fr;
+  gap: 24px;
 }
 
 .admin-field {
@@ -55,82 +72,123 @@
 }
 
 .admin-field-wide {
-  grid-column: 1 / -1;
+  grid-column: auto;
 }
 
 .admin-label {
-  display: block;
   margin-bottom: 10px;
-  font-size: 16px;
+  font-family: "Georgia", "Times New Roman", serif;
+  font-size: 1.15rem;
   font-weight: 600;
-  color: #111827;
+  color: #2f2822;
 }
 
 .admin-input {
   width: 100%;
-  height: 54px;
-  border-radius: 12px;
-  border: 1px solid #d1d5db;
-  background: rgba(255, 255, 255, 0.9);
+  height: 58px;
   padding: 0 18px;
-  font-size: 18px;
-  color: #111827;
+  border-radius: 8px;
+  border: 1px solid rgba(108, 92, 79, 0.35);
+  background: rgba(255, 252, 247, 0.94);
+  font-size: 1rem;
+  color: #221d18;
   box-sizing: border-box;
   outline: none;
-}
-
-.admin-input:focus {
-  border-color: #4f46e5;
-  box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.15);
+  transition: all 0.25s ease;
 }
 
 .admin-input::placeholder {
-  color: #94a3b8;
+  color: #9c8f82;
+  font-style: italic;
+}
+
+.admin-input:focus {
+  border-color: #7b3f62;
+  box-shadow: 0 0 0 3px rgba(123, 63, 98, 0.12);
+}
+
+.admin-login-options {
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.admin-remember {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.98rem;
+  color: #4f4338;
+}
+
+.admin-remember input[type="checkbox"] {
+  width: 17px;
+  height: 17px;
+  accent-color: #7b3f62;
+}
+
+.admin-forgot-password {
+  font-size: 0.98rem;
+  font-weight: 600;
+  color: #7b3f62;
+  text-decoration: none;
+}
+
+.admin-forgot-password:hover {
+  color: #5b2947;
 }
 
 .admin-register-actions {
   margin-top: 28px;
-  display: flex;
-  justify-content: flex-end;
-  gap: 18px;
   width: 100%;
 }
 
-.admin-cancel-button {
-  border: none;
-  background: transparent;
-  font-size: 15px;
-  font-weight: 600;
-  color: #111827;
-  cursor: pointer;
-}
-
 .admin-save-button {
+  width: 100%;
+  min-height: 58px;
   border: none;
-  border-radius: 10px;
-  background: #4f46e5;
-  color: white;
-  padding: 12px 18px;
-  font-size: 15px;
-  font-weight: 600;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #7b3f62 0%, #4a314d 100%);
+  color: #fffaf4;
+  font-family: "Georgia", "Times New Roman", serif;
+  font-size: 1.25rem;
+  font-weight: 700;
   cursor: pointer;
+  transition: 0.25s ease;
+  box-shadow: 0 12px 24px rgba(74, 49, 77, 0.22);
 }
 
 .admin-save-button:hover {
-  background: #4338ca;
+  transform: translateY(-1px);
+  filter: brightness(1.03);
+}
+
+.admin-message {
+  margin-top: 16px;
+  text-align: center;
+  color: #4f4338;
+  font-size: 0.95rem;
 }
 
 @media (max-width: 768px) {
+  .admin-register-page {
+    padding: 20px 16px;
+  }
+
   .admin-register-overlay {
-    padding: 24px;
+    padding: 34px 22px;
+    width: 100%;
   }
 
-  .admin-register-grid {
-    grid-template-columns: 1fr;
-    gap: 24px;
+  .admin-register-title {
+    font-size: 2.1rem;
   }
 
-  .admin-field-wide {
-    grid-column: auto;
+  .admin-login-options {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }

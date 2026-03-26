@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import banner2 from "../assets/banner2.jpg";
+import "./AdminRegister.css";
 
 export default function AdminRegister() {
   const [formData, setFormData] = useState({
@@ -48,8 +50,6 @@ export default function AdminRegister() {
       console.log("Login correcto:", data);
       setMessage("Inicio de sesión correcto");
       navigate("/admin/publicaciones");
-
-      
     } catch (error) {
       console.error("Error en login:", error);
       setMessage("Email o contraseña incorrectos");
@@ -59,82 +59,83 @@ export default function AdminRegister() {
   }
 
   return (
-    <div className="min-h-screen bg-blue">
-      <div className="flex items-center justify-center px-6 py-10 sm:px-10 lg:px-16">
-        <div className="w-full max-w-md">
-          <div className="mb-8">
-            <h1 className="text-4xl font-bold tracking-tight text-slate-900">
-              Iniciar sesión
-            </h1>
-          </div>
+    <div
+      className="admin-register-page"
+      style={{
+        backgroundImage: `linear-gradient(rgba(30, 24, 20, 0.35), rgba(30, 24, 20, 0.35)), url(${banner2})`,
+      }}
+    >
+      <div className="admin-register-overlay">
+        <div className="admin-register-content">
+          <section className="admin-register-section">
+            <h1 className="admin-register-title">Iniciar sesión</h1>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-              <label
-                htmlFor="email"
-                className="mb-2 block text-sm font-medium text-slate-800"
-              >
-                Correo electrónico
-              </label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                value={formData.email}
-                onChange={handleChange}
-                className="w-full rounded-lg border border-slate-300 px-4 py-3 outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
-              />
-            </div>
+            <p className="admin-register-subtitle">
+              Accede a tu espacio creativo para gestionar publicaciones, textos y contenido artístico.
+            </p>
 
-            <div>
-              <label
-                htmlFor="password"
-                className="mb-2 block text-sm font-medium text-slate-800"
-              >
-                Contraseña
-              </label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                value={formData.password}
-                onChange={handleChange}
-                className="w-full rounded-lg border border-slate-300 px-4 py-3 outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
-              />
-            </div>
+            <form onSubmit={handleSubmit} className="admin-register-form">
+              <div className="admin-register-grid">
+                <div className="admin-field admin-field-wide">
+                  <label htmlFor="email" className="admin-label">
+                    Correo electrónico
+                  </label>
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    className="admin-input"
+                    placeholder="Escribe tu correo"
+                  />
+                </div>
 
-            <div className="flex items-center justify-between text-sm">
-              <label className="flex items-center gap-3 text-slate-600">
-                <input
-                  type="checkbox"
-                  name="remember"
-                  checked={formData.remember}
-                  onChange={handleChange}
-                  className="h-4 w-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500"
-                />
-                Recordarme
-              </label>
+                <div className="admin-field admin-field-wide">
+                  <label htmlFor="password" className="admin-label">
+                    Contraseña
+                  </label>
+                  <input
+                    id="password"
+                    name="password"
+                    type="password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    className="admin-input"
+                    placeholder="Escribe tu contraseña"
+                  />
+                </div>
+              </div>
 
-              <a
-                href="#"
-                className="font-medium text-indigo-600 hover:text-indigo-500"
-              >
-                ¿Olvidaste la contraseña?
-              </a>
-            </div>
+              <div className="admin-login-options">
+                <label className="admin-remember">
+                  <input
+                    type="checkbox"
+                    name="remember"
+                    checked={formData.remember}
+                    onChange={handleChange}
+                  />
+                  <span>Recordarme</span>
+                </label>
 
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full rounded-lg bg-indigo-600 px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-500 disabled:opacity-60"
-            >
-              {loading ? "Entrando..." : "Iniciar sesión"}
-            </button>
+                <a href="#" className="admin-forgot-password">
+                  ¿Olvidaste la contraseña?
+                </a>
+              </div>
 
-            {message && (
-              <p className="text-sm text-slate-700 text-center">{message}</p>
-            )}
-          </form>
+              <div className="admin-register-actions">
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="admin-save-button"
+                >
+                  {loading ? "Entrando..." : "Iniciar sesión"}
+                </button>
+              </div>
+
+              {message && <p className="admin-message">{message}</p>}
+            </form>
+          </section>
         </div>
       </div>
     </div>
