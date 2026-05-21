@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import banner2 from "../assets/banner2.jpg";
 import "./AdminRegister.css";
 
@@ -12,6 +13,7 @@ export default function AdminRegister() {
 
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   function handleChange(event) {
@@ -41,14 +43,18 @@ export default function AdminRegister() {
         }),
       });
 
-      const data = await response.json();
+      const text = await response.text();
+      const data = text ? JSON.parse(text) : {};
+
+      console.log("Status:", response.status, "Body:", data);
 
       if (!response.ok) {
         throw new Error(data.message || "Error al iniciar sesión");
       }
 
-      console.log("Login correcto:", data);
-      setMessage("Inicio de sesión correcto");
+      if (data.token) {
+        localStorage.setItem("token", data.token);
+      }
       navigate("/admin/publicaciones");
     } catch (error) {
       console.error("Error en login:", error);
@@ -95,15 +101,41 @@ export default function AdminRegister() {
                   <label htmlFor="password" className="admin-label">
                     Contraseña
                   </label>
-                  <input
-                    id="password"
-                    name="password"
-                    type="password"
-                    value={formData.password}
-                    onChange={handleChange}
-                    className="admin-input"
-                    placeholder="Escribe tu contraseña"
-                  />
+                  <div style={{ position: "relative" }}>
+                    <input
+                      id="password"
+                      name="password"
+                      type={showPassword ? "text" : "password"}
+                      value={formData.password}
+                      onChange={handleChange}
+                      className="admin-input"
+                      placeholder="Escribe tu contraseña"
+                      style={{ paddingRight: "2.75rem" }}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword((prev) => !prev)}
+                      style={{
+                        position: "absolute",
+                        right: "0.75rem",
+                        top: "50%",
+                        transform: "translateY(-50%)",
+                        background: "none",
+                        border: "none",
+                        cursor: "pointer",
+                        color: "#7B1E2B",
+                        padding: 0,
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                      tabIndex={-1}
+                    >
+                      {showPassword
+                        ? <EyeSlashIcon style={{ width: "1.25rem", height: "1.25rem" }} />
+                        : <EyeIcon style={{ width: "1.25rem", height: "1.25rem" }} />
+                      }
+                    </button>
+                  </div>
                 </div>
               </div>
 

@@ -32,3 +32,21 @@
     transform: translateX(0);
   }
 }
+
+.theory-section .publication-title {
+  display: inline-block;
+  background-color: #1e1814;
+  color: #ffffff;
+  padding: 5px 14px;
+  margin-bottom: 10px;
+  letter-spacing: 0.03em;
+}
+
+.theory-section .publication-date {
+  display: inline-block;
+  background-color: rgba(123, 30, 43, 0.1);
+  color: #7b1e2b;
+  border-left: 3px solid #7b1e2b;
+  padding: 3px 10px;
+  font-size: 14px;
+}

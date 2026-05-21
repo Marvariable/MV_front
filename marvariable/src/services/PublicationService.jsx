@@ -47,7 +47,8 @@ export async function createPublication(publicationData) {
     throw new Error("Error al crear la publicación");
   }
 
-  return response.json();
+  const text = await response.text();
+  return text ? JSON.parse(text) : {};
 }
 
 export async function updatePublication(id, publicationData) {
@@ -63,7 +64,8 @@ export async function updatePublication(id, publicationData) {
     throw new Error("Error al actualizar la publicación");
   }
 
-  return response.json();
+  const text = await response.text();
+  return text ? JSON.parse(text) : {};
 }
 
 export async function deletePublication(id) {

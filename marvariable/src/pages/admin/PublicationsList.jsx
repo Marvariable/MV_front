@@ -1,13 +1,18 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import {getPublications,deletePublication,} from "../../services/PublicationService";
-import adminPublicationsBg from "../../assets/banner4.jpg";
+import { PlusCircleIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import { getPublications, deletePublication } from "../../services/PublicationService";
+import ConfirmModal from "../../components/admin/ConfirmModal";
+import EditModal from "../../components/admin/EditModal";
 
 export default function PublicationsList() {
   const [publications, setPublications] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTitle, setSearchTitle] = useState("");
   const [searchDate, setSearchDate] = useState("");
+  const [successMsg, setSuccessMsg] = useState("");
+  const [confirmId, setConfirmId] = useState(null);
+  const [editId, setEditId] = useState(null);
 
   async function loadPublications(filters = {}) {
     try {
@@ -22,152 +27,206 @@ export default function PublicationsList() {
     }
   }
 
-  useEffect(() => {
-    loadPublications();
-  }, []);
+  useEffect(() => { loadPublications(); }, []);
 
   async function handleSearch(event) {
     event.preventDefault();
-
-    await loadPublications({
-      title: searchTitle,
-      publicationDate: searchDate,
-    });
+    await loadPublications({ title: searchTitle, publicationDate: searchDate });
   }
 
-  async function handleDelete(id) {
-    const confirmed = window.confirm(
-      "¿Seguro que quieres eliminar esta publicación?"
-    );
-
-    if (!confirmed) return;
-
+  async function handleDelete() {
     try {
-      await deletePublication(id);
-      await loadPublications({
-        title: searchTitle,
-        publicationDate: searchDate,
-      });
+      await deletePublication(confirmId);
+      setConfirmId(null);
+      await loadPublications({ title: searchTitle, publicationDate: searchDate });
+      setSuccessMsg("Publicación eliminada correctamente");
+      setTimeout(() => setSuccessMsg(""), 3000);
     } catch (error) {
       console.error(error);
       alert("No se pudo eliminar la publicación");
     }
   }
 
+  const inputStyle = {
+    width: "100%", padding: "10px 14px",
+    background: "#FFFFFF", border: "1px solid #DDD0C4",
+    borderRadius: "6px", color: "#1A1410", fontSize: "13px",
+    outline: "none", boxSizing: "border-box",
+  };
+
   return (
-    <div
-      className="min-h-screen bg-cover bg-center bg-no-repeat"
-      style={{ backgroundImage: `url(${adminPublicationsBg})` }}
-    >
-      <div className="min-h-screen bg-[#F5F1EC]/88 p-2 text-[#1F2937]">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-3xl font-bold text-[#1F2937]">
-            Mis Publicaciones
-          </h2>
+    <div style={{ minHeight: "100vh", padding: "40px 48px", boxSizing: "border-box" }}>
 
-          <Link
-            to="/admin/publicaciones/nueva"
-            className="bg-[#7B1E2B] text-white px-5 py-2.5 rounded-xl hover:bg-[#651823] transition"
-          >
-            Nueva publicación
-          </Link>
+      {editId && (
+        <EditModal
+          id={editId}
+          onClose={() => setEditId(null)}
+          onSuccess={() => {
+            setEditId(null);
+            loadPublications({ title: searchTitle, publicationDate: searchDate });
+            setSuccessMsg("Publicación actualizada correctamente");
+            setTimeout(() => setSuccessMsg(""), 3000);
+          }}
+        />
+      )}
+
+      {confirmId && (
+        <ConfirmModal
+          message="Esta acción no se puede deshacer. ¿Confirmas que deseas eliminar esta publicación?"
+          onConfirm={handleDelete}
+          onCancel={() => setConfirmId(null)}
+        />
+      )}
+
+      {successMsg && (
+        <div style={{
+          display: "flex", alignItems: "center", gap: "10px",
+          background: "#F0FAF4", border: "1px solid #A8D5B5",
+          borderRadius: "6px", padding: "14px 18px", marginBottom: "24px",
+          fontSize: "13px", color: "#2D6B4A",
+        }}>
+          ✓ {successMsg}
         </div>
+      )}
 
-        <form
-          onSubmit={handleSearch}
-          className="bg-white rounded-2xl shadow-sm border border-[#E7DED5] p-4 mb-6 grid md:grid-cols-3 gap-4"
+      {/* Header */}
+      <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", paddingBottom: "24px", marginBottom: "28px", borderBottom: "1px solid #DDD0C4" }}>
+        <div>
+          <p style={{ fontSize: "9px", letterSpacing: "0.4em", textTransform: "uppercase", color: "#7b1e2b", marginBottom: "5px" }}>
+            Panel de administración
+          </p>
+          <h1 style={{ fontSize: "24px", fontWeight: 300, letterSpacing: "0.15em", textTransform: "uppercase", color: "#1A1410", margin: 0 }}>
+            Publicaciones
+          </h1>
+        </div>
+        <Link
+          to="/admin/publicaciones/nueva"
+          style={{
+            display: "flex", alignItems: "center", gap: "8px",
+            padding: "10px 20px",
+            background: "#7b1e2b", color: "#FFFFFF",
+            borderRadius: "6px", textDecoration: "none",
+            fontSize: "11px", letterSpacing: "0.2em", textTransform: "uppercase",
+            fontWeight: 600, transition: "background 0.25s ease",
+          }}
+          onMouseEnter={(e) => { e.currentTarget.style.background = "#651823"; }}
+          onMouseLeave={(e) => { e.currentTarget.style.background = "#7b1e2b"; }}
         >
-          <div>
-            <label className="block mb-1 font-medium text-[#1F2937]">
-              Buscar por título
-            </label>
-            <input
-              type="text"
-              value={searchTitle}
-              onChange={(e) => setSearchTitle(e.target.value)}
-              className="w-full border border-[#E7DED5] rounded-xl px-3 py-2 text-[#1F2937] bg-white focus:outline-none focus:ring-2 focus:ring-[#7B1E2B] focus:border-[#7B1E2B]"
-              placeholder="Escribe un título"
-            />
-          </div>
+          <PlusCircleIcon style={{ width: "15px", height: "15px" }} />
+          Nueva publicación
+        </Link>
+      </div>
 
-          <div>
-            <label className="block mb-1 font-medium text-[#1F2937]">
-              Buscar por fecha
-            </label>
-            <input
-              type="date"
-              value={searchDate}
-              onChange={(e) => setSearchDate(e.target.value)}
-              className="w-full border border-[#E7DED5] rounded-xl px-3 py-2 text-[#1F2937] bg-white focus:outline-none focus:ring-2 focus:ring-[#7B1E2B] focus:border-[#7B1E2B]"
-            />
-          </div>
+      {/* Search */}
+      <form onSubmit={handleSearch} style={{
+        display: "grid", gridTemplateColumns: "1fr 1fr auto",
+        gap: "16px", alignItems: "end",
+        background: "#FEFCF8", border: "1px solid #DDD0C4",
+        borderRadius: "8px", padding: "20px 24px", marginBottom: "24px",
+      }}>
+        <div>
+          <label style={{ display: "block", fontSize: "10px", letterSpacing: "0.2em", textTransform: "uppercase", color: "#5A4538", marginBottom: "7px", fontWeight: 600 }}>
+            Buscar por título
+          </label>
+          <input type="text" value={searchTitle} onChange={(e) => setSearchTitle(e.target.value)}
+            style={inputStyle} placeholder="Título..."
+            onFocus={(e) => { e.target.style.borderColor = "#7b1e2b"; e.target.style.boxShadow = "0 0 0 3px rgba(123,30,43,0.08)"; }}
+            onBlur={(e) => { e.target.style.borderColor = "#DDD0C4"; e.target.style.boxShadow = "none"; }}
+          />
+        </div>
+        <div>
+          <label style={{ display: "block", fontSize: "10px", letterSpacing: "0.2em", textTransform: "uppercase", color: "#5A4538", marginBottom: "7px", fontWeight: 600 }}>
+            Buscar por fecha
+          </label>
+          <input type="date" value={searchDate} onChange={(e) => setSearchDate(e.target.value)}
+            style={inputStyle}
+            onFocus={(e) => { e.target.style.borderColor = "#7b1e2b"; e.target.style.boxShadow = "0 0 0 3px rgba(123,30,43,0.08)"; }}
+            onBlur={(e) => { e.target.style.borderColor = "#DDD0C4"; e.target.style.boxShadow = "none"; }}
+          />
+        </div>
+        <button type="submit"
+          style={{
+            display: "flex", alignItems: "center", justifyContent: "center", gap: "8px",
+            padding: "10px 20px", background: "#7b1e2b", border: "none", borderRadius: "6px",
+            color: "#FFFFFF", fontSize: "11px", letterSpacing: "0.2em", textTransform: "uppercase",
+            cursor: "pointer", fontWeight: 600, transition: "background 0.2s ease", whiteSpace: "nowrap",
+          }}
+          onMouseEnter={(e) => { e.currentTarget.style.background = "#651823"; }}
+          onMouseLeave={(e) => { e.currentTarget.style.background = "#7b1e2b"; }}
+        >
+          <MagnifyingGlassIcon style={{ width: "14px", height: "14px" }} />
+          Buscar
+        </button>
+      </form>
 
-          <div className="flex items-end">
-            <button
-              type="submit"
-              className="bg-[#7B1E2B] text-white px-4 py-2 rounded-xl w-full hover:bg-[#651823] transition"
-            >
-              Buscar
-            </button>
-          </div>
-        </form>
-
+      {/* Table */}
+      <div style={{ background: "#FEFCF8", border: "1px solid #DDD0C4", borderRadius: "8px", overflow: "hidden" }}>
         {loading ? (
-          <p className="text-[#1F2937]">Cargando publicaciones...</p>
+          <p style={{ padding: "40px", textAlign: "center", fontSize: "13px", color: "#9A8E84" }}>Cargando publicaciones...</p>
         ) : (
-          <div className="bg-white rounded-2xl shadow-sm border border-[#E7DED5] overflow-hidden">
-            <table className="w-full">
-              <thead className="bg-[#7B1E2B] text-white">
+          <table style={{ width: "100%", borderCollapse: "collapse" }}>
+            <thead>
+              <tr style={{ background: "#F5EFE8", borderBottom: "1px solid #DDD0C4" }}>
+                {["Título", "Fecha", "Categoría", "Estado", "Acciones"].map((h) => (
+                  <th key={h} style={{ padding: "12px 18px", fontSize: "10px", letterSpacing: "0.25em", textTransform: "uppercase", color: "#5A4538", fontWeight: 600, textAlign: "left" }}>
+                    {h}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {publications.length === 0 ? (
                 <tr>
-                  <th className="text-left p-4">Título</th>
-                  <th className="text-left p-4">Fecha</th>
-                  <th className="text-left p-4">Categoría</th>
-                  <th className="text-left p-4">Estado</th>
-                  <th className="text-left p-4">Acciones</th>
+                  <td colSpan={5} style={{ padding: "40px", textAlign: "center", fontSize: "13px", color: "#9A8E84" }}>
+                    No hay publicaciones para mostrar.
+                  </td>
                 </tr>
-              </thead>
-
-              <tbody>
-                {publications.length === 0 ? (
-                  <tr>
-                    <td colSpan="5" className="p-4 text-center text-slate-500">
-                      No hay publicaciones para mostrar.
+              ) : (
+                publications.map((pub) => (
+                  <tr key={pub.id} style={{ borderBottom: "1px solid #EDE5DC", transition: "background 0.15s ease" }}
+                    onMouseEnter={(e) => { e.currentTarget.style.background = "#FDF5EE"; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; }}
+                  >
+                    <td style={{ padding: "14px 18px", fontSize: "14px", color: "#1A1410", maxWidth: "260px" }}>
+                      <span style={{ display: "block", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{pub.title}</span>
+                    </td>
+                    <td style={{ padding: "14px 18px", fontSize: "13px", color: "#6B5848", whiteSpace: "nowrap" }}>{pub.publicationDate}</td>
+                    <td style={{ padding: "14px 18px", fontSize: "13px", color: "#6B5848" }}>{pub.category}</td>
+                    <td style={{ padding: "14px 18px" }}>
+                      <span style={{
+                        fontSize: "10px", letterSpacing: "0.15em", textTransform: "uppercase",
+                        padding: "3px 10px", borderRadius: "4px",
+                        background: pub.status === "PUBLISHED" ? "#EBF7F0" : "#F5EFE8",
+                        color: pub.status === "PUBLISHED" ? "#2D6B4A" : "#7A6050",
+                        border: `1px solid ${pub.status === "PUBLISHED" ? "#A8D5B5" : "#DDD0C4"}`,
+                        fontWeight: 500,
+                      }}>
+                        {pub.status === "PUBLISHED" ? "Publicado" : "Borrador"}
+                      </span>
+                    </td>
+                    <td style={{ padding: "14px 18px" }}>
+                      <div style={{ display: "flex", gap: "8px" }}>
+                        <button onClick={() => setEditId(pub.id)}
+                          style={{ padding: "6px 14px", border: "1px solid #DDD0C4", borderRadius: "5px", background: "transparent", color: "#5A4538", fontSize: "11px", letterSpacing: "0.1em", textTransform: "uppercase", cursor: "pointer", fontWeight: 500, transition: "all 0.2s ease" }}
+                          onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#C9A84C"; e.currentTarget.style.color = "#9A7A20"; }}
+                          onMouseLeave={(e) => { e.currentTarget.style.borderColor = "#DDD0C4"; e.currentTarget.style.color = "#5A4538"; }}
+                        >
+                          Editar
+                        </button>
+                        <button onClick={() => setConfirmId(pub.id)}
+                          style={{ padding: "6px 14px", border: "1px solid #DDD0C4", borderRadius: "5px", background: "transparent", color: "#7b1e2b", fontSize: "11px", letterSpacing: "0.1em", textTransform: "uppercase", cursor: "pointer", fontWeight: 500, transition: "all 0.2s ease" }}
+                          onMouseEnter={(e) => { e.currentTarget.style.background = "#7b1e2b"; e.currentTarget.style.color = "#FFFFFF"; e.currentTarget.style.borderColor = "#7b1e2b"; }}
+                          onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "#7b1e2b"; e.currentTarget.style.borderColor = "#DDD0C4"; }}
+                        >
+                          Eliminar
+                        </button>
+                      </div>
                     </td>
                   </tr>
-                ) : (
-                  publications.map((publication) => (
-                    <tr
-                      key={publication.id}
-                      className="border-t border-[#E7DED5] text-[#1F2937]"
-                    >
-                      <td className="p-4">{publication.title}</td>
-                      <td className="p-4">{publication.publicationDate}</td>
-                      <td className="p-4">{publication.category}</td>
-                      <td className="p-4">{publication.status}</td>
-                      <td className="p-4">
-                        <div className="flex gap-2">
-                          <Link
-                            to={`/admin/publicaciones/${publication.id}/editar`}
-                            className="px-3 py-1.5 rounded-lg border border-[#7B1E2B] text-[#7B1E2B] bg-white hover:bg-[#F9ECEF] transition"
-                          >
-                            Editar
-                          </Link>
-
-                          <button
-                            type="button"
-                            onClick={() => handleDelete(publication.id)}
-                            className="px-3 py-1.5 rounded-lg bg-[#B42318] text-white hover:bg-[#912018] transition"
-                          >
-                            Eliminar
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          </div>
+                ))
+              )}
+            </tbody>
+          </table>
         )}
       </div>
     </div>

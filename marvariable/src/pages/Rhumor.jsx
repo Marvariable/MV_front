@@ -1,126 +1,147 @@
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
+import { motion, AnimatePresence } from "motion/react";
 import "./Rhumor.css";
-import mural from "../assets/paint1.jpg";
-import mural2 from "../assets/paint2.jpg";
-import mural3 from "../assets/paint3.jpg";
-import mural4 from "../assets/paint4.jpg";
-import mural5 from "../assets/paint5.jpg";
-import mural6 from "../assets/paint6.jpg";
-import mural7 from "../assets/paint7.jpg";
-import mural8 from "../assets/paint8.jpg";
-import mural9 from "../assets/paint9.jpg";
-import mural10 from "../assets/paint10.jpg";
-
+import { getVisualArts } from "../services/VisualArtsService";
 
 export default function Rhumor() {
-  const images = [
-    { id: 1, src: mural, title: "0.1" },
-    { id: 2, src: mural2, title: "0.2" },
-    { id: 3, src: mural3, title: "0.3" },
-    { id: 4, src: mural4, title: "0.4" },
-    { id: 5, src: mural5, title: "0.5" },
-    { id: 6, src: mural6, title: "0.1" },
-    { id: 7, src: mural7, title: "0.2" },
-    { id: 8, src: mural8, title: "0.3" },
-    { id: 9, src: mural9, title: "0.4" },
-    { id: 10, src: mural10, title: "0.5" },
-  
-
-
-
-  ];
-
+  const [images, setImages] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [selectedIndex, setSelectedIndex] = useState(null);
 
-  function openImage(index) {
-    setSelectedIndex(index);
-  }
-
-  function closeImage() {
-    setSelectedIndex(null);
-  }
-
-  function showPrev() {
-    setSelectedIndex((prev) =>
-      prev === 0 ? images.length - 1 : prev - 1
-    );
-  }
-
-  function showNext() {
-    setSelectedIndex((prev) =>
-      prev === images.length - 1 ? 0 : prev + 1
-    );
-  }
-
-  function handleOverlayClick(event) {
-    if (event.target.classList.contains("rhumor-overlay")) {
-      closeImage();
+  useEffect(() => {
+    async function load() {
+      try {
+        const data = await getVisualArts();
+        setImages(data);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
     }
-  }
+    load();
+  }, []);
+
+  const close = useCallback(() => setSelectedIndex(null), []);
+  const prev = useCallback(() => setSelectedIndex((i) => (i === 0 ? images.length - 1 : i - 1)), [images.length]);
+  const next = useCallback(() => setSelectedIndex((i) => (i === images.length - 1 ? 0 : i + 1)), [images.length]);
+
+  useEffect(() => {
+    if (selectedIndex === null) return;
+    function handleKey(e) {
+      if (e.key === "Escape") close();
+      if (e.key === "ArrowLeft") prev();
+      if (e.key === "ArrowRight") next();
+    }
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [selectedIndex, close, prev, next]);
 
   return (
-    <section className="rhumor-page">
-      <div className="rhumor-header">
-        <h1 className="rhumor-title">R  H U M O R</h1>
+    <div className="rhumor-page">
 
-      </div>
+      <header className="rhumor-header">
+<h1 className="rhumor-title">
+          <span className="rhumor-title-main">R H U M O R</span>
+          <span className="rhumor-title-sub">Artes Visuales</span>
+        </h1>
+        <div className="rhumor-title-rule" />
+      </header>
 
-      <div className="rhumor-gallery">
-        {images.map((image, index) => (
-          <button
-            key={image.id}
-            type="button"
-            className="rhumor-card"
-            onClick={() => openImage(index)}
-          >
-            <span className="rhumor-card-label">{image.title}</span>
-            <img
-              src={image.src}
-              alt={`Obra ${image.title}`}
-              className="rhumor-thumb"
-            />
-          </button>
-        ))}
-      </div>
-
-      {selectedIndex !== null && (
-        <div className="rhumor-overlay" onClick={handleOverlayClick}>
-          <button
-            type="button"
-            className="rhumor-close"
-            onClick={closeImage}
-            aria-label="Cerrar imagen"
-          >
-            ×
-          </button>
-
-          <button
-            type="button"
-            className="rhumor-nav rhumor-nav-left"
-            onClick={showPrev}
-            aria-label="Imagen anterior"
-          >
-            ‹
-          </button>
-
-          <div className="rhumor-lightbox-frame">
-            <img
-              src={images[selectedIndex].src}
-              alt={`Obra ampliada ${images[selectedIndex].title}`}
-              className="rhumor-lightbox-image"
-            />
-          </div>
-
-          <button
-            type="button"
-            className="rhumor-nav rhumor-nav-right"
-            onClick={showNext}
-            aria-label="Imagen siguiente"
-          >
-            ›
-          </button>
+      {loading ? (
+        <p className="rhumor-loading">Cargando colección...</p>
+      ) : images.length === 0 ? (
+        <p className="rhumor-loading">Sin obras disponibles.</p>
+      ) : (
+        <div className="rhumor-masonry">
+          {images.map((image, index) => (
+            <motion.button
+              key={image.id}
+              type="button"
+              className="rhumor-artwork"
+              initial={{ opacity: 0, y: 50, scale: 0.94 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 0.65, delay: index * 0.07, ease: "easeOut" }}
+              whileHover={{ y: -10, transition: { duration: 0.3, ease: "easeOut" } }}
+              whileTap={{ scale: 0.97 }}
+              onClick={() => setSelectedIndex(index)}
+            >
+              <div className="rhumor-frame">
+                <div className="rhumor-mat">
+                  <img
+                    src={image.imageUrl?.startsWith("http") ? image.imageUrl : `http://localhost:8080${image.imageUrl}`}
+                    alt={image.nombre}
+                    className="rhumor-artwork-img"
+                  />
+                </div>
+                <div className="rhumor-frame-glow" />
+                <div className="rhumor-zoom-hint">＋</div>
+              </div>
+              <div className="rhumor-artwork-info">
+                <p className="rhumor-artwork-label">{image.nombre}</p>
+                {image.publicationDate && (
+                  <p className="rhumor-artwork-year">
+                    {new Date(image.publicationDate).getFullYear()}
+                  </p>
+                )}
+              </div>
+            </motion.button>
+          ))}
         </div>
       )}
-    </section>
+
+      <AnimatePresence>
+        {selectedIndex !== null && (
+          <motion.div
+            className="rhumor-lb-overlay"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            onClick={close}
+          >
+            <button
+              className="rhumor-lb-nav rhumor-lb-prev"
+              onClick={(e) => { e.stopPropagation(); prev(); }}
+              aria-label="Anterior"
+            >
+              ‹
+            </button>
+
+            <motion.div
+              className="rhumor-lb-content"
+              initial={{ scale: 0.88, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.88, opacity: 0 }}
+              transition={{ duration: 0.35, ease: "easeOut" }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="rhumor-lb-frame">
+                <img
+                  src={images[selectedIndex].imageUrl?.startsWith("http") ? images[selectedIndex].imageUrl : `http://localhost:8080${images[selectedIndex].imageUrl}`}
+                  alt={images[selectedIndex].nombre}
+                  className="rhumor-lb-img"
+                />
+              </div>
+              <div className="rhumor-lb-footer">
+                <span className="rhumor-lb-title">{images[selectedIndex].nombre}</span>
+                <span className="rhumor-lb-counter">
+                  {selectedIndex + 1} / {images.length}
+                </span>
+                <button className="rhumor-lb-close" onClick={close}>✕ Cerrar</button>
+              </div>
+            </motion.div>
+
+            <button
+              className="rhumor-lb-nav rhumor-lb-next"
+              onClick={(e) => { e.stopPropagation(); next(); }}
+              aria-label="Siguiente"
+            >
+              ›
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   );
 }

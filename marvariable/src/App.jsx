@@ -12,9 +12,12 @@ import Rhumor from "./pages/Rhumor";
 import AboutAuthor from "./pages/AboutAuthor";
 import Contact from "./pages/Contact";
 import AdminRegister from "./pages/AdminRegister";
+import ProtectedRoute from "./components/ProtectedRoute";
 import PublicationsList from "./pages/admin/PublicationsList";
+import VisualArtsList from "./pages/admin/VisualArtsList";
 import CreatePublication from "./pages/admin/CreatePublication";
 import EditPublication from "./pages/admin/EditPublication";
+import BooksList from "./pages/admin/BooksList";
 
 function App() {
   return (
@@ -33,13 +36,15 @@ function App() {
       </Route>
 
      
-      <Route path="/admin" element={<AdminLayout />}>
-        <Route path="publicaciones" element={<PublicationsList />} />
-        <Route path="publicaciones/nueva" element={<CreatePublication />} />
-        <Route
-          path="publicaciones/:id/editar"
-          element={<EditPublication />}
-        />
+      <Route element={<ProtectedRoute />}>
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route path="publicaciones" element={<PublicationsList />} />
+          <Route path="publicaciones/nueva" element={<CreatePublication />} />
+          <Route path="publicaciones/:id/editar" element={<EditPublication />} />
+          <Route path="arte-digital" element={<VisualArtsList category="ARTE_DIGITAL" title="Arte Digital" />} />
+          <Route path="arte-manual" element={<VisualArtsList category="ARTE_MANUAL" title="Arte Manual" />} />
+          <Route path="libros" element={<BooksList />} />
+        </Route>
       </Route>
     </Routes>
   );

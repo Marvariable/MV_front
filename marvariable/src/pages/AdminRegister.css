@@ -103,8 +103,8 @@
 }
 
 .admin-input:focus {
-  border-color: #7b3f62;
-  box-shadow: 0 0 0 3px rgba(123, 63, 98, 0.12);
+  border-color: #7b1e2b;
+  box-shadow: 0 0 0 3px rgba(123, 30, 43, 0.12);
 }
 
 .admin-login-options {
@@ -127,18 +127,18 @@
 .admin-remember input[type="checkbox"] {
   width: 17px;
   height: 17px;
-  accent-color: #7b3f62;
+  accent-color: #7b1e2b;
 }
 
 .admin-forgot-password {
   font-size: 0.98rem;
   font-weight: 600;
-  color: #7b3f62;
+  color: #7b1e2b;
   text-decoration: none;
 }
 
 .admin-forgot-password:hover {
-  color: #5b2947;
+  color: #9b3040;
 }
 
 .admin-register-actions {
@@ -151,19 +151,21 @@
   min-height: 58px;
   border: none;
   border-radius: 8px;
-  background: linear-gradient(135deg, #7b3f62 0%, #4a314d 100%);
-  color: #fffaf4;
+  background: linear-gradient(135deg, #7b1e2b 0%, #4a1018 100%);
+  color: #f0ece8;
   font-family: "Georgia", "Times New Roman", serif;
   font-size: 1.25rem;
   font-weight: 700;
   cursor: pointer;
   transition: 0.25s ease;
-  box-shadow: 0 12px 24px rgba(74, 49, 77, 0.22);
+  box-shadow: 0 12px 28px rgba(123, 30, 43, 0.28);
+  letter-spacing: 0.05em;
 }
 
 .admin-save-button:hover {
   transform: translateY(-1px);
-  filter: brightness(1.03);
+  background: linear-gradient(135deg, #651823 0%, #380e14 100%);
+  box-shadow: 0 16px 32px rgba(123, 30, 43, 0.36);
 }
 
 .admin-message {

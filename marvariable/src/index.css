@@ -1,1 +1,5 @@
 @import "tailwindcss";
+
+.publications-container {
+  padding: 32px 24px;
+}
