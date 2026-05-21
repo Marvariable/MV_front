@@ -6,6 +6,10 @@
 
 <br/>
 
+![Dev](https://img.shields.io/badge/Desarrolladora_%26_Dise%C3%B1o-Cristina_Viej%C3%B3-C9A84C?style=for-the-badge&labelColor=7b1e2b)
+
+<br/>
+
 ![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=white&labelColor=0d1117)
 ![Vite](https://img.shields.io/badge/Vite-8-646CFF?style=for-the-badge&logo=vite&logoColor=white&labelColor=0d1117)
 ![TailwindCSS](https://img.shields.io/badge/Tailwind-4-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white&labelColor=0d1117)
@@ -245,5 +249,9 @@ npm run build
 <br/>
 
 ![Made with](https://img.shields.io/badge/Hecho_con-React_19_+_Vite_8-C9A84C?style=for-the-badge&labelColor=0d1117)
+
+<br/>
+
+![Dev](https://img.shields.io/badge/Desarrolladora_%26_Dise%C3%B1o-Cristina_Viej%C3%B3-C9A84C?style=for-the-badge&labelColor=7b1e2b)
 
 </div>
