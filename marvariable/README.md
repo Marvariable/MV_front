@@ -2,7 +2,7 @@
 
 <img src="https://readme-typing-svg.demolab.com?font=Cormorant+Garamond&weight=300&size=52&duration=3500&pause=1200&color=C9A84C&center=true&vCenter=true&width=700&height=80&lines=M+A+R+V+A+R+I+A+B+L+E" alt="Marvariable" />
 
-<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=300&size=16&duration=2500&pause=2000&color=7b1e2b&center=true&vCenter=true&width=700&height=30&lines=Filosof%C3%ADa+•+Narrativa+•+Teatro+•+Artes+Visuales;Arte+y+pensamiento+desde+Quito+al+mundo" alt="Subtítulo" />
+<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=300&size=16&duration=2500&pause=2000&color=7b1e2b&center=true&vCenter=true&width=700&height=30&lines=Filosof%C3%ADa+%E2%80%A2+Narrativa+%E2%80%A2+Teatro+%E2%80%A2+Artes+Visuales;Arte+y+pensamiento+desde+Quito+al+mundo" alt="Subtítulo" />
 
 <br/>
 
@@ -240,7 +240,7 @@ npm run build
 
 <div align="center">
 
-<img src="https://readme-typing-svg.demolab.com?font=Cormorant+Garamond&weight=300&size=18&duration=4000&pause=1000&color=7b1e2b&center=true&vCenter=true&width=500&lines=Quito%2C+Ecuador+—+marvariable%40gmail.com" alt="Contacto" />
+<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=300&size=15&duration=4000&pause=1000&color=7b1e2b&center=true&vCenter=true&width=500&lines=Quito%2C+Ecuador+%E2%80%94+marvariable%40gmail.com" alt="Contacto" />
 
 <br/>
 
