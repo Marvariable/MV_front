@@ -8,7 +8,7 @@ import banner2 from "../assets/banner2.jpg"
 import banner5bg from "../assets/banner5.jpg"
 
 const sectionRoutes = {
-  OBRAS_PUBLICADAS: "/publications",
+  OBRAS_PUBLICADAS: "/libros",
   TEORIA: "/theory",
   NARRATIVA: "/narrative",
   TEATRO: "/theater",
@@ -131,7 +131,7 @@ export default function Home() {
                 transition={{ duration: 0.6, delay: index * 0.15, ease: "easeOut" }}
               >
                 <Link
-                  to={sectionRoutes[text.section] || "/publications"}
+                  to={`${sectionRoutes[text.section] || "/publications"}#publication-${text.id}`}
                   className="recent-card-link"
                 >
                   <article className="recent-card">
@@ -155,6 +155,9 @@ export default function Home() {
                           .replace(/^./, (letter) => letter.toUpperCase())}
                       </p>
                       <h3 className="recent-title">{text.title}</h3>
+                      {text.description && (
+                        <p className="recent-excerpt">{text.description}</p>
+                      )}
                       <span className="recent-read">Leer →</span>
                     </div>
                   </article>
@@ -214,6 +217,9 @@ export default function Home() {
                       </div>
                       <div className="book-card-info">
                         <h3 className="book-title">{book.title}</h3>
+                        {book.description && (
+                          <p className="book-excerpt">{book.description}</p>
+                        )}
                         <p className="book-date">
                           {new Date(book.publicationDate)
                             .toLocaleDateString("es-ES", { year: "numeric" })}

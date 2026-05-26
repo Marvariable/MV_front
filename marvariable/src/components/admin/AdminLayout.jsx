@@ -117,7 +117,7 @@ export default function AdminLayout() {
 
           <SectionLabel label="Arte Visual" />
           <NavLink to="/admin/arte-digital" icon={ComputerDesktopIcon} label="Arte digital" />
-          <NavLink to="/admin/arte-manual" icon={PaintBrushIcon} label="Arte manual" />
+          <NavLink to="/admin/arte-manual" icon={PaintBrushIcon} label="Arte plástico" />
 
           <SectionLabel label="Colección" />
           <NavLink to="/admin/libros" icon={BookOpenIcon} label="Libros" />

@@ -1,6 +1,6 @@
 .pub-page {
   min-height: 100vh;
-  background-color: #0e0c0b;
+  background-color: #0a0604;
 }
 
 .pub-loading {
@@ -8,57 +8,60 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #0e0c0b;
+  background-color: #0a0604;
 }
 
 .pub-loading-text {
   font-size: 11px;
   letter-spacing: 0.5em;
   text-transform: uppercase;
-  color: #5a5050;
+  color: #9a8e88;
 }
 
 /* ── Header ── */
 .pub-header {
-  padding: 32px 24px;
-  border-bottom: 1px solid #1e1a18;
+  padding: 40px 40px 32px;
+  border-bottom: 1px solid #2a2520;
 }
 
-.pub-header-inner {
-  display: flex;
-  align-items: flex-end;
-  gap: 28px;
-}
-
-.pub-header-line {
-  width: 3px;
-  height: 70px;
-  background: linear-gradient(to bottom, #7b1e2b, #C9A84C);
-  flex-shrink: 0;
-}
-
-.pub-header-text {
+.books-page-title {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  align-items: flex-end;
+  gap: 4px;
+  margin: 0 0 24px;
+  line-height: 1;
 }
 
-.pub-header-eyebrow {
-  font-size: 11px;
-  letter-spacing: 0.45em;
-  text-transform: uppercase;
-  color: #e08080;
-  font-weight: 300;
-}
-
-.pub-header-title {
-  font-size: clamp(22px, 3vw, 38px);
-  font-weight: 100;
-  letter-spacing: 0.2em;
+.books-page-main {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(14px, 2vw, 24px);
+  font-weight: 400;
+  letter-spacing: 0.25em;
   text-transform: uppercase;
   color: #f0ece8;
-  margin: 0;
-  line-height: 1;
+  animation: fadeSlideInRight 1s ease-out;
+}
+
+.books-page-sub {
+  font-size: clamp(10px, 1.1vw, 14px);
+  font-weight: 300;
+  font-style: italic;
+  letter-spacing: 0.4em;
+  color: #e8d498;
+  padding-left: 4px;
+}
+
+.books-page-rule {
+  width: 90px;
+  height: 2px;
+  background: linear-gradient(to left, #7b1e2b, #C9A84C, transparent);
+  margin-left: auto;
+}
+
+@keyframes fadeSlideInRight {
+  from { opacity: 0; transform: translateX(40px); }
+  to   { opacity: 1; transform: translateX(0); }
 }
 
 .pub-empty {
@@ -74,25 +77,28 @@
 .pub-list {
   display: flex;
   flex-direction: column;
-  padding: 0 0 0 24px;
+  padding: 32px 40px;
+  gap: 24px;
 }
 
 /* ── Card ── */
 .pub-card {
   position: relative;
   display: grid;
-  grid-template-columns: 220px 1fr;
-  min-height: 320px;
-  border-bottom: 1px solid #1e1a18;
+  grid-template-columns: 240px 1fr;
+  min-height: 300px;
   overflow: hidden;
-  transition: background-color 0.4s ease;
+  background-color: #f5f0ea;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
+  transition: box-shadow 0.4s ease, transform 0.3s ease;
 }
 
 .pub-card:hover {
-  background-color: #130f0e;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+  transform: translateY(-2px);
 }
 
-/* Background image */
+/* Image */
 .pub-card-bg-wrapper {
   position: relative;
   overflow: hidden;
@@ -104,26 +110,26 @@
   object-fit: cover;
   object-position: center;
   display: block;
-  transition: transform 0.8s ease, filter 0.5s ease;
-  filter: brightness(0.75) saturate(0.8);
+  transition: transform 0.8s ease;
+  filter: brightness(0.85) saturate(0.85);
 }
 
 .pub-card:hover .pub-card-bg-img {
   transform: scale(1.05);
-  filter: brightness(0.9) saturate(1);
+  filter: brightness(1) saturate(1);
 }
 
 .pub-card-bg-gradient {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to right, transparent 60%, #0e0c0b 100%);
+  background: linear-gradient(to right, transparent 50%, #f5f0ea 100%);
   pointer-events: none;
 }
 
-/* Vertical accent bar */
+/* Accent bar */
 .pub-card-accent {
   position: absolute;
-  left: 220px;
+  left: 240px;
   top: 0;
   bottom: 0;
   width: 2px;
@@ -137,60 +143,64 @@
   opacity: 1;
 }
 
-/* Text body */
+/* Body */
 .pub-card-body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 48px 56px 48px 52px;
+  padding: 40px 48px 40px 44px;
   position: relative;
   z-index: 1;
+  background-color: #f5f0ea;
 }
 
 .pub-card-index {
-  font-size: 11px;
-  letter-spacing: 0.35em;
-  color: #3a3030;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 12px;
+  letter-spacing: 0.3em;
+  color: #7b1e2b;
   font-weight: 400;
   text-transform: uppercase;
+  opacity: 0.6;
 }
 
 .pub-card-main {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 16px;
   flex: 1;
   justify-content: center;
 }
 
 .pub-card-title {
-  font-size: clamp(20px, 2.2vw, 28px);
-  font-weight: 300;
-  color: #f0ece8;
-  letter-spacing: 0.05em;
-  line-height: 1.3;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(22px, 2.5vw, 34px);
+  font-weight: 400;
+  color: #1a1410;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
   margin: 0;
   transition: color 0.3s ease;
 }
 
 .pub-card:hover .pub-card-title {
-  color: #C9A84C;
+  color: #7b1e2b;
 }
 
 .pub-card-excerpt {
   font-size: 13px;
-  line-height: 1.9;
-  color: #b0a099;
+  line-height: 1.95;
+  color: #6a5e58;
   margin: 0;
   display: -webkit-box;
-  -webkit-line-clamp: 5;
+  -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
   overflow: hidden;
   transition: color 0.3s ease;
 }
 
 .pub-card:hover .pub-card-excerpt {
-  color: #cec4bc;
+  color: #3a2e28;
 }
 
 .pub-card-meta {
@@ -199,24 +209,24 @@
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 12px;
-  padding-top: 24px;
-  border-top: 1px solid #1e1a18;
+  padding-top: 20px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .pub-card-date {
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: 0.25em;
   text-transform: uppercase;
-  color: #d4c8c0;
+  color: #c0605a;
 }
 
 .pub-card-link {
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: 0.3em;
   text-transform: uppercase;
   color: #C9A84C;
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 400;
   transition: color 0.3s ease, letter-spacing 0.3s ease;
 }
 
@@ -227,7 +237,12 @@
 
 @media (max-width: 768px) {
   .pub-list {
-    padding: 0;
+    padding: 24px 20px;
+    gap: 20px;
+  }
+
+  .pub-header {
+    padding: 32px 20px 24px;
   }
 
   .pub-card {
@@ -236,11 +251,11 @@
   }
 
   .pub-card-bg-wrapper {
-    height: 240px;
+    height: 220px;
   }
 
   .pub-card-bg-gradient {
-    background: linear-gradient(to bottom, transparent 60%, #0e0c0b 100%);
+    background: linear-gradient(to bottom, transparent 50%, #f5f0ea 100%);
   }
 
   .pub-card-accent {
@@ -248,6 +263,7 @@
   }
 
   .pub-card-body {
-    padding: 32px 28px;
+    padding: 28px 24px;
+    background-color: #f5f0ea;
   }
 }

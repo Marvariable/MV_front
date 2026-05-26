@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "motion/react";
 import "./Rhumor.css";
 import { getVisualArts } from "../services/VisualArtsService";
 
-export default function Rhumor() {
+export default function Rhumor({ category = "ARTE_DIGITAL" }) {
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedIndex, setSelectedIndex] = useState(null);
@@ -11,7 +11,7 @@ export default function Rhumor() {
   useEffect(() => {
     async function load() {
       try {
-        const data = await getVisualArts();
+        const data = await getVisualArts(category);
         setImages(data);
       } catch (err) {
         console.error(err);
@@ -20,7 +20,7 @@ export default function Rhumor() {
       }
     }
     load();
-  }, []);
+  }, [category]);
 
   const close = useCallback(() => setSelectedIndex(null), []);
   const prev = useCallback(() => setSelectedIndex((i) => (i === 0 ? images.length - 1 : i - 1)), [images.length]);
@@ -43,7 +43,9 @@ export default function Rhumor() {
       <header className="rhumor-header">
 <h1 className="rhumor-title">
           <span className="rhumor-title-main">R H U M O R</span>
-          <span className="rhumor-title-sub">Artes Visuales</span>
+          <span className="rhumor-title-sub">
+            {category === "ARTE_DIGITAL" ? "Arte Digital" : "Arte Plástico"}
+          </span>
         </h1>
         <div className="rhumor-title-rule" />
       </header>

@@ -1,9 +1,73 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { PhotoIcon, PlusCircleIcon, ExclamationCircleIcon, XMarkIcon, ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 import { getBooks, createBook, updateBook, deleteBook } from "../../services/BooksService";
 
 const CLOUDINARY_CLOUD = "de96ah1mw";
 const CLOUDINARY_PRESET = "cristina";
+
+function ImageCropSelector({ imageUrl, value, onChange }) {
+  const containerRef = useRef(null);
+  const [dims, setDims] = useState(null);
+  const CARD_RATIO = 260 / 200;
+
+  const parts = (value || "50% 50%").split(" ");
+  const xPct = parseFloat(parts[0]) || 50;
+  const yPct = parseFloat(parts[1]) || 50;
+
+  function onLoad(e) {
+    if (!containerRef.current) return;
+    const natW = e.target.naturalWidth;
+    const natH = e.target.naturalHeight;
+    const cw = containerRef.current.offsetWidth;
+    const ch = Math.round(cw * natH / natW);
+    let cropW = Math.round(cw * 0.42);
+    let cropH = Math.round(cropW * CARD_RATIO);
+    if (cropH > ch) { cropH = ch; cropW = Math.round(cropH / CARD_RATIO); }
+    setDims({ maxLeft: cw - cropW, maxTop: ch - cropH, cropW, cropH });
+  }
+
+  function handleInteraction(e) {
+    if (!dims || !containerRef.current) return;
+    const { cropW, cropH, maxLeft, maxTop } = dims;
+    const rect = containerRef.current.getBoundingClientRect();
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    const left = Math.max(0, Math.min(maxLeft, clientX - rect.left - cropW / 2));
+    const top = Math.max(0, Math.min(maxTop, clientY - rect.top - cropH / 2));
+    onChange(`${maxLeft > 0 ? Math.round((left / maxLeft) * 100) : 50}% ${maxTop > 0 ? Math.round((top / maxTop) * 100) : 50}%`);
+  }
+
+  const boxLeft = dims ? (xPct / 100) * dims.maxLeft : 0;
+  const boxTop = dims ? (yPct / 100) * dims.maxTop : 0;
+
+  return (
+    <div style={{ marginTop: "14px" }}>
+      <p style={{ fontSize: "10px", letterSpacing: "0.2em", textTransform: "uppercase", color: "#5A4538", fontWeight: 600, marginBottom: "8px" }}>
+        Encuadrar imagen <span style={{ fontWeight: 400, textTransform: "none", letterSpacing: "0.03em", color: "#9A8E84" }}>— arrastra el recuadro</span>
+      </p>
+      <div
+        ref={containerRef}
+        style={{ position: "relative", cursor: "crosshair", userSelect: "none", overflow: "hidden", borderRadius: "6px", border: "1px solid #DDD0C4" }}
+        onClick={handleInteraction}
+        onMouseMove={(e) => { if (e.buttons === 1) handleInteraction(e); }}
+      >
+        <img src={imageUrl} onLoad={onLoad} style={{ width: "100%", display: "block" }} alt="encuadre" />
+        {dims && (
+          <>
+            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: boxTop, background: "rgba(0,0,0,0.6)", pointerEvents: "none" }} />
+            <div style={{ position: "absolute", top: boxTop + dims.cropH, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.6)", pointerEvents: "none" }} />
+            <div style={{ position: "absolute", top: boxTop, left: 0, width: boxLeft, height: dims.cropH, background: "rgba(0,0,0,0.6)", pointerEvents: "none" }} />
+            <div style={{ position: "absolute", top: boxTop, left: boxLeft + dims.cropW, right: 0, height: dims.cropH, background: "rgba(0,0,0,0.6)", pointerEvents: "none" }} />
+            <div style={{ position: "absolute", left: boxLeft, top: boxTop, width: dims.cropW, height: dims.cropH, border: "2px solid #C9A84C", boxSizing: "border-box", pointerEvents: "none" }} />
+          </>
+        )}
+      </div>
+      <p style={{ fontSize: "11px", color: "#9A8E84", marginTop: "6px" }}>
+        {xPct}% horizontal · {yPct}% vertical
+      </p>
+    </div>
+  );
+}
 
 const inputStyle = (hasError) => ({
   width: "100%", padding: "11px 14px",
@@ -19,7 +83,7 @@ const labelStyle = {
 };
 
 function BookForm({ initialData, onSubmit, loading, submitText, onCancel }) {
-  const [formData, setFormData] = useState({ title: "", publicationDate: "", status: "DRAFT", imageUrl: "", link: "", showOnHome: false, ...initialData });
+  const [formData, setFormData] = useState({ title: "", description: "", cita: "", publicationDate: "", status: "DRAFT", imageUrl: "", imagePosition: "50% 50%", link: "", showOnHome: false, ...initialData });
   const [uploading, setUploading] = useState(false);
   const [preview, setPreview] = useState(initialData?.imageUrl || null);
   const [errors, setErrors] = useState({});
@@ -27,6 +91,7 @@ function BookForm({ initialData, onSubmit, loading, submitText, onCancel }) {
   function validate() {
     const e = {};
     if (!formData.title.trim()) e.title = "El título es obligatorio.";
+    if (!formData.description.trim()) e.description = "La descripción es obligatoria.";
     if (!formData.publicationDate) e.publicationDate = "La fecha es obligatoria.";
     if (!formData.imageUrl) e.imageUrl = "Debes subir una imagen.";
     return e;
@@ -71,6 +136,34 @@ function BookForm({ initialData, onSubmit, loading, submitText, onCancel }) {
       </div>
 
       <div>
+        <label style={labelStyle}>Descripción</label>
+        <textarea value={formData.description}
+          onChange={(e) => setFormData((p) => ({ ...p, description: e.target.value }))}
+          rows={4}
+          placeholder="Sinopsis o descripción del libro..."
+          style={{ ...inputStyle(errors.description), resize: "vertical", lineHeight: 1.8, paddingTop: "12px" }}
+          onFocus={(e) => { e.target.style.borderColor = "#7b1e2b"; e.target.style.boxShadow = "0 0 0 3px rgba(123,30,43,0.08)"; }}
+          onBlur={(e) => { e.target.style.borderColor = errors.description ? "#B42318" : "#DDD0C4"; e.target.style.boxShadow = "none"; }}
+        />
+        {errors.description && <p style={{ display: "flex", alignItems: "center", gap: "4px", marginTop: "5px", fontSize: "12px", color: "#B42318" }}><ExclamationCircleIcon style={{ width: "13px", height: "13px" }} />{errors.description}</p>}
+      </div>
+
+      <div>
+        <label style={labelStyle}>
+          Cita{" "}
+          <span style={{ color: "#9A8E84", fontWeight: 400, fontSize: "10px", textTransform: "none", letterSpacing: "0.03em" }}>— opcional</span>
+        </label>
+        <textarea value={formData.cita}
+          onChange={(e) => setFormData((p) => ({ ...p, cita: e.target.value }))}
+          rows={3}
+          placeholder="Ej: Rojas, C. (2012). Título. Editorial, página."
+          style={{ ...inputStyle(false), resize: "vertical", lineHeight: 1.8, paddingTop: "12px" }}
+          onFocus={(e) => { e.target.style.borderColor = "#7b1e2b"; e.target.style.boxShadow = "0 0 0 3px rgba(123,30,43,0.08)"; }}
+          onBlur={(e) => { e.target.style.borderColor = "#DDD0C4"; e.target.style.boxShadow = "none"; }}
+        />
+      </div>
+
+      <div>
         <label style={labelStyle}>Fecha de publicación</label>
         <input type="date" value={formData.publicationDate}
           onChange={(e) => { setFormData((p) => ({ ...p, publicationDate: e.target.value })); setErrors((p) => ({ ...p, publicationDate: undefined })); }}
@@ -95,24 +188,28 @@ function BookForm({ initialData, onSubmit, loading, submitText, onCancel }) {
 
       <div>
         <label style={labelStyle}>Imagen</label>
-        <div style={{ display: "flex", alignItems: "flex-start", gap: "16px" }}>
-          <label style={{
-            flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
-            border: `2px dashed ${errors.imageUrl ? "#B42318" : "#DDD0C4"}`,
-            borderRadius: "8px", padding: "24px", cursor: "pointer",
-            transition: "all 0.2s ease", background: "#FEFCF8",
-          }}
-            onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#7b1e2b"; e.currentTarget.style.background = "#FDF5EE"; }}
-            onMouseLeave={(e) => { e.currentTarget.style.borderColor = errors.imageUrl ? "#B42318" : "#DDD0C4"; e.currentTarget.style.background = "#FEFCF8"; }}
-          >
-            <PhotoIcon style={{ width: "26px", height: "26px", color: "#7b1e2b", marginBottom: "7px", opacity: 0.7 }} />
-            <span style={{ fontSize: "13px", color: "#6B5848" }}>{uploading ? "Subiendo..." : "Seleccionar imagen"}</span>
-            <span style={{ fontSize: "11px", color: "#9A8E84", marginTop: "3px" }}>JPG · PNG · WEBP</span>
-            <input type="file" accept="image/*" onChange={handleImageUpload} style={{ display: "none" }} disabled={uploading} />
-          </label>
-          {preview && <img src={preview} alt="preview" style={{ width: "100px", height: "140px", objectFit: "cover", borderRadius: "6px", border: "1px solid #DDD0C4", flexShrink: 0 }} />}
-        </div>
+        <label style={{
+          display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+          border: `2px dashed ${errors.imageUrl ? "#B42318" : "#DDD0C4"}`,
+          borderRadius: "8px", padding: "24px", cursor: "pointer",
+          transition: "all 0.2s ease", background: "#FEFCF8",
+        }}
+          onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#7b1e2b"; e.currentTarget.style.background = "#FDF5EE"; }}
+          onMouseLeave={(e) => { e.currentTarget.style.borderColor = errors.imageUrl ? "#B42318" : "#DDD0C4"; e.currentTarget.style.background = "#FEFCF8"; }}
+        >
+          <PhotoIcon style={{ width: "26px", height: "26px", color: "#7b1e2b", marginBottom: "7px", opacity: 0.7 }} />
+          <span style={{ fontSize: "13px", color: "#6B5848" }}>{uploading ? "Subiendo..." : preview ? "Cambiar imagen" : "Seleccionar imagen"}</span>
+          <span style={{ fontSize: "11px", color: "#9A8E84", marginTop: "3px" }}>JPG · PNG · WEBP</span>
+          <input type="file" accept="image/*" onChange={handleImageUpload} style={{ display: "none" }} disabled={uploading} />
+        </label>
         {errors.imageUrl && <p style={{ display: "flex", alignItems: "center", gap: "4px", marginTop: "5px", fontSize: "12px", color: "#B42318" }}><ExclamationCircleIcon style={{ width: "13px", height: "13px" }} />{errors.imageUrl}</p>}
+        {preview && (
+          <ImageCropSelector
+            imageUrl={preview}
+            value={formData.imagePosition}
+            onChange={(pos) => setFormData((prev) => ({ ...prev, imagePosition: pos }))}
+          />
+        )}
       </div>
 
       <div>

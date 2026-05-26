@@ -6,14 +6,13 @@ import { createPublication } from "../../services/PublicationService";
 export default function CreatePublication() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
 
   async function handleCreate(formData) {
     try {
       setLoading(true);
       await createPublication(formData);
-      setSuccess(formData.status === "DRAFT" ? "DRAFT" : "PUBLISHED");
-      setTimeout(() => navigate("/admin/publicaciones"), 2000);
+      const msg = formData.status === "DRAFT" ? "Guardado como borrador" : "Publicación creada exitosamente";
+      navigate("/admin/publicaciones", { state: { successMsg: msg } });
     } catch (error) {
       console.error(error);
       alert("No se pudo crear la publicación");
@@ -32,17 +31,6 @@ export default function CreatePublication() {
           Nueva publicación
         </h1>
       </div>
-
-      {success && (
-        <div style={{
-          display: "flex", alignItems: "center", gap: "10px",
-          background: "#F0FAF4", border: "1px solid #A8D5B5",
-          borderRadius: "6px", padding: "14px 18px", marginBottom: "28px",
-          fontSize: "13px", color: "#2D6B4A",
-        }}>
-          ✓ {success === "DRAFT" ? "Guardado como borrador. Redirigiendo..." : "Publicación creada exitosamente. Redirigiendo..."}
-        </div>
-      )}
 
       <PublicationForm onSubmit={handleCreate} loading={loading} submitText="Crear publicación" />
     </div>

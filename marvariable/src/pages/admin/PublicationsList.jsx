@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { PlusCircleIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { getPublications, deletePublication } from "../../services/PublicationService";
 import ConfirmModal from "../../components/admin/ConfirmModal";
@@ -13,6 +13,15 @@ export default function PublicationsList() {
   const [successMsg, setSuccessMsg] = useState("");
   const [confirmId, setConfirmId] = useState(null);
   const [editId, setEditId] = useState(null);
+  const timerRef = useRef(null);
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.state?.successMsg) {
+      setSuccessMsg(location.state.successMsg);
+      setTimeout(() => setSuccessMsg(""), 4000);
+    }
+  }, []);
 
   async function loadPublications(filters = {}) {
     try {
@@ -28,6 +37,14 @@ export default function PublicationsList() {
   }
 
   useEffect(() => { loadPublications(); }, []);
+
+  useEffect(() => {
+    clearTimeout(timerRef.current);
+    timerRef.current = setTimeout(() => {
+      loadPublications({ title: searchTitle, publicationDate: searchDate });
+    }, 300);
+    return () => clearTimeout(timerRef.current);
+  }, [searchTitle, searchDate]);
 
   async function handleSearch(event) {
     event.preventDefault();
@@ -167,8 +184,8 @@ export default function PublicationsList() {
           <table style={{ width: "100%", borderCollapse: "collapse" }}>
             <thead>
               <tr style={{ background: "#F5EFE8", borderBottom: "1px solid #DDD0C4" }}>
-                {["Título", "Fecha", "Categoría", "Estado", "Acciones"].map((h) => (
-                  <th key={h} style={{ padding: "12px 18px", fontSize: "10px", letterSpacing: "0.25em", textTransform: "uppercase", color: "#5A4538", fontWeight: 600, textAlign: "left" }}>
+                {["Título", "Fecha", "Sección", "Estado", "Acciones"].map((h) => (
+                  <th key={h} style={{ padding: "12px 18px", fontSize: "12px", letterSpacing: "0.05em", color: "#5A4538", fontWeight: 600, textAlign: "left" }}>
                     {h}
                   </th>
                 ))}
@@ -191,7 +208,9 @@ export default function PublicationsList() {
                       <span style={{ display: "block", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{pub.title}</span>
                     </td>
                     <td style={{ padding: "14px 18px", fontSize: "13px", color: "#6B5848", whiteSpace: "nowrap" }}>{pub.publicationDate}</td>
-                    <td style={{ padding: "14px 18px", fontSize: "13px", color: "#6B5848" }}>{pub.category}</td>
+                    <td style={{ padding: "14px 18px", fontSize: "13px", color: "#6B5848" }}>
+                      {{ TEORIA: "Teoría", NARRATIVA: "Narrativa", TEATRO: "Teatro" }[pub.section] || pub.section}
+                    </td>
                     <td style={{ padding: "14px 18px" }}>
                       <span style={{
                         fontSize: "10px", letterSpacing: "0.15em", textTransform: "uppercase",

@@ -139,6 +139,7 @@
   flex-direction: column;
   gap: 8px;
   border-top: 1px solid #2a2a2a;
+  flex: 1;
 }
 
 .recent-card-link:hover .recent-card-body {
@@ -173,6 +174,22 @@
 
 .recent-card-link:hover .recent-title {
   color: #C9A84C;
+}
+
+.recent-excerpt {
+  font-size: 12px;
+  line-height: 1.7;
+  color: #c8bfb8;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  transition: color 0.3s ease;
+}
+
+.recent-card-link:hover .recent-excerpt {
+  color: #ddd6d0;
 }
 
 .recent-read {
@@ -315,13 +332,24 @@
   font-size: 13px;
   font-weight: 500;
   line-height: 1.4;
-  color: #d4cfc9;
+  color: #f0ece8;
   letter-spacing: 0.03em;
   transition: color 0.3s ease;
 }
 
 .book-card-link:hover .book-title {
   color: #C9A84C;
+}
+
+.book-excerpt {
+  font-size: 11px;
+  line-height: 1.7;
+  color: #c8bfb8;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .book-date {
@@ -368,9 +396,9 @@
 
 .gallery-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap: 48px 32px;
-  max-width: 1100px;
+  max-width: 600px;
   margin: 0 auto;
 }
 

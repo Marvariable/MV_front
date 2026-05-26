@@ -4,7 +4,7 @@ import PublicLayout from "./components/admin/PublicLayout";
 import AdminLayout from "./components/admin/AdminLayout";
 
 import Home from "./pages/Home";
-import Publications from "./pages/Publications";
+import Books from "./pages/Books";
 import Theory from "./pages/Theory";
 import Narrative from "./pages/Narrative";
 import Theater from "./pages/Theater";
@@ -25,11 +25,12 @@ function App() {
     
       <Route element={<PublicLayout />}>
         <Route path="/" element={<Home />} />
-        <Route path="/publications" element={<Publications />} />
+        <Route path="/libros" element={<Books />} />
         <Route path="/theory" element={<Theory />} />
         <Route path="/narrative" element={<Narrative />} />
         <Route path="/theater" element={<Theater />} />
-        <Route path="/rhumor" element={<Rhumor />} />
+        <Route path="/rhumor" element={<Rhumor category="ARTE_DIGITAL" />} />
+        <Route path="/arte-plastico" element={<Rhumor category="ARTE_MANUAL" />} />
         <Route path="/about-author" element={<AboutAuthor />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/admin-register" element={<AdminRegister />} />
@@ -42,7 +43,7 @@ function App() {
           <Route path="publicaciones/nueva" element={<CreatePublication />} />
           <Route path="publicaciones/:id/editar" element={<EditPublication />} />
           <Route path="arte-digital" element={<VisualArtsList category="ARTE_DIGITAL" title="Arte Digital" />} />
-          <Route path="arte-manual" element={<VisualArtsList category="ARTE_MANUAL" title="Arte Manual" />} />
+          <Route path="arte-manual" element={<VisualArtsList category="ARTE_MANUAL" title="Arte Plástico" />} />
           <Route path="libros" element={<BooksList />} />
         </Route>
       </Route>

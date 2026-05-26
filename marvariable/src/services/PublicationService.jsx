@@ -44,7 +44,9 @@ export async function createPublication(publicationData) {
   });
 
   if (!response.ok) {
-    throw new Error("Error al crear la publicación");
+    const errorText = await response.text();
+    console.error("Backend error:", errorText);
+    throw new Error(errorText || "Error al crear la publicación");
   }
 
   const text = await response.text();

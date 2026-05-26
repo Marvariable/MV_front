@@ -1,19 +1,26 @@
 import { useState, useEffect, useRef } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import "./Navbar.css"
+import logoMar from "../assets/logomar.jpg"
 
 const menuItems = [
-  { label: "OBRAS PUBLICADAS", path: "/publications" },
+  { label: "LIBROS", path: "/libros" },
   { label: "TEORÍA",           path: "/theory" },
   { label: "NARRATIVA",        path: "/narrative" },
   { label: "TEATRO",           path: "/theater" },
-  { label: "ARTES VISUALES",   path: "/rhumor" },
+  {
+    label: "ARTES VISUALES",
+    dropdown: [
+      { label: "Arte Digital", path: "/rhumor" },
+      { label: "Arte Plástico", path: "/arte-plastico" },
+    ],
+  },
   { label: "SOBRE EL AUTOR",   path: "/about-author" },
   { label: "CONTACTO",         path: "/contact" },
 ]
 
 const sectionLabels = {
-  OBRAS_PUBLICADAS: "Obras publicadas",
+  OBRAS_PUBLICADAS: "Libros",
   TEORIA:           "Teoría",
   NARRATIVA:        "Narrativa",
   TEATRO:           "Teatro",
@@ -74,33 +81,27 @@ export default function Navbar() {
 
   return (
     <>
-      <header className="w-full bg-white">
-        <div className="grid grid-cols-3 items-center border-b border-gray-200 px-6 py-8">
+      <header className="navbar-header">
+        <div className="navbar-top">
           <div />
 
-          <h1 className="text-center text-5xl font-light tracking-[0.2em] text-neutral-800">
-            <Link to="/" className="hover:opacity-70">
-              MARVARIABLE
-            </Link>
-          </h1>
+          <Link to="/" className="navbar-brand-link">
+            <img src={logoMar} alt="Marvariable" className="navbar-logo" />
+            MARVARIABLE
+          </Link>
 
-          <div className="flex items-center justify-end gap-3">
-            <Link to="/admin-register" className="hover:opacity-70">
+          <div className="navbar-actions">
+            <Link to="/admin-register" className="navbar-icon-btn" aria-label="Admin">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                strokeWidth={1.5} stroke="currentColor" className="h-5 w-5 text-neutral-800">
+                strokeWidth={1.5} stroke="currentColor" width="20" height="20">
                 <path strokeLinecap="round" strokeLinejoin="round"
                   d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
               </svg>
             </Link>
-
-            <button
-              type="button"
-              aria-label="Buscar"
-              className="text-neutral-900 hover:opacity-70"
-              onClick={() => setSearchOpen(true)}
-            >
+            <button type="button" aria-label="Buscar" className="navbar-icon-btn"
+              onClick={() => setSearchOpen(true)}>
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                strokeWidth="1.8" stroke="currentColor" className="h-5 w-5">
+                strokeWidth="1.8" stroke="currentColor" width="20" height="20">
                 <path strokeLinecap="round" strokeLinejoin="round"
                   d="M21 21l-4.35-4.35m1.85-5.15a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
               </svg>
@@ -108,18 +109,30 @@ export default function Navbar() {
           </div>
         </div>
 
-        <nav className="px-6 py-4">
-          <ul className="flex flex-wrap items-center justify-center gap-8 text-sm tracking-wide text-neutral-800">
-            {menuItems.map((item) => (
-              <li key={item.label}>
-                <Link
-                  to={item.path}
-                  className="relative pb-0.5 transition-colors duration-300 hover:text-[#7b1e2b] after:absolute after:bottom-0 after:left-0 after:h-[1.5px] after:w-0 after:bg-[#7b1e2b] after:transition-all after:duration-300 hover:after:w-full"
-                >
-                  {item.label}
-                </Link>
-              </li>
-            ))}
+        <div className="navbar-rule" />
+
+        <nav className="navbar-nav">
+          <ul className="navbar-menu">
+            {menuItems.map((item) =>
+              item.dropdown ? (
+                <li key={item.label} className="nav-dropdown">
+                  <span className="nav-dropdown-trigger navbar-link">{item.label}</span>
+                  <div className="nav-dropdown-menu">
+                    {item.dropdown.map((sub) => (
+                      <Link key={sub.path} to={sub.path} className="nav-dropdown-item">
+                        {sub.label}
+                      </Link>
+                    ))}
+                  </div>
+                </li>
+              ) : (
+                <li key={item.label}>
+                  <Link to={item.path} className="navbar-link">
+                    {item.label}
+                  </Link>
+                </li>
+              )
+            )}
           </ul>
         </nav>
       </header>
@@ -197,10 +210,10 @@ export default function Navbar() {
                         key={pub.id}
                         className="search-pub-item"
                         onClick={() => handleResultClick(
-                          pub.section === "OBRAS_PUBLICADAS" ? "/publications" :
+                          pub.section === "OBRAS_PUBLICADAS" ? "/libros" :
                           pub.section === "TEORIA"           ? "/theory" :
                           pub.section === "NARRATIVA"        ? "/narrative" :
-                          pub.section === "TEATRO"           ? "/theater" : "/publications"
+                          pub.section === "TEATRO"           ? "/theater" : "/libros"
                         )}
                       >
                         {pub.imageUrl && (
