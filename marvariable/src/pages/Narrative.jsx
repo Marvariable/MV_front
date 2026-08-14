@@ -107,8 +107,8 @@ export default function Narrative() {
           </div>
         )}
         <div style={{ display: "flex", flexDirection: "column", gap: "20px", width: "100%" }}>
-          {filtered.map((publication, index) => (
-            <motion.article
+          {filtered.map((publication, index) => {
+            return (<motion.article
               key={publication.id}
               id={`publication-${publication.id}`}
               initial={{ opacity: 0, y: 40 }}
@@ -126,10 +126,14 @@ export default function Narrative() {
             >
               {/* Image */}
               <div style={{ position: "relative", overflow: "hidden", minHeight: "260px" }}>
-                <img
-                  src={publication.imageUrl ? (publication.imageUrl.startsWith("http") ? publication.imageUrl : `http://localhost:8080${publication.imageUrl}`) : ""}
-                  alt={publication.title}
-                  style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: publication.imagePosition || "center", display: "block", transition: "transform 0.6s ease" }}
+                <div
+                  style={{
+                    position: "absolute", inset: 0,
+                    backgroundImage: `url(${publication.imageUrl ? (publication.imageUrl.startsWith("http") ? publication.imageUrl : `http://localhost:8080${publication.imageUrl}`) : ""})`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                    transition: "transform 0.6s ease",
+                  }}
                   onMouseEnter={e => { e.currentTarget.style.transform = "scale(1.06)"; }}
                   onMouseLeave={e => { e.currentTarget.style.transform = "scale(1)"; }}
                 />
@@ -180,8 +184,8 @@ export default function Narrative() {
                   )}
                 </div>
               </div>
-            </motion.article>
-          ))}
+            </motion.article>);
+          })}
         </div>
         </>
       )}

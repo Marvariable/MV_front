@@ -5,70 +5,6 @@ import { getBooks, createBook, updateBook, deleteBook } from "../../services/Boo
 const CLOUDINARY_CLOUD = "de96ah1mw";
 const CLOUDINARY_PRESET = "cristina";
 
-function ImageCropSelector({ imageUrl, value, onChange }) {
-  const containerRef = useRef(null);
-  const [dims, setDims] = useState(null);
-  const CARD_RATIO = 260 / 200;
-
-  const parts = (value || "50% 50%").split(" ");
-  const xPct = parseFloat(parts[0]) || 50;
-  const yPct = parseFloat(parts[1]) || 50;
-
-  function onLoad(e) {
-    if (!containerRef.current) return;
-    const natW = e.target.naturalWidth;
-    const natH = e.target.naturalHeight;
-    const cw = containerRef.current.offsetWidth;
-    const ch = Math.round(cw * natH / natW);
-    let cropW = Math.round(cw * 0.42);
-    let cropH = Math.round(cropW * CARD_RATIO);
-    if (cropH > ch) { cropH = ch; cropW = Math.round(cropH / CARD_RATIO); }
-    setDims({ maxLeft: cw - cropW, maxTop: ch - cropH, cropW, cropH });
-  }
-
-  function handleInteraction(e) {
-    if (!dims || !containerRef.current) return;
-    const { cropW, cropH, maxLeft, maxTop } = dims;
-    const rect = containerRef.current.getBoundingClientRect();
-    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-    const left = Math.max(0, Math.min(maxLeft, clientX - rect.left - cropW / 2));
-    const top = Math.max(0, Math.min(maxTop, clientY - rect.top - cropH / 2));
-    onChange(`${maxLeft > 0 ? Math.round((left / maxLeft) * 100) : 50}% ${maxTop > 0 ? Math.round((top / maxTop) * 100) : 50}%`);
-  }
-
-  const boxLeft = dims ? (xPct / 100) * dims.maxLeft : 0;
-  const boxTop = dims ? (yPct / 100) * dims.maxTop : 0;
-
-  return (
-    <div style={{ marginTop: "14px" }}>
-      <p style={{ fontSize: "10px", letterSpacing: "0.2em", textTransform: "uppercase", color: "#5A4538", fontWeight: 600, marginBottom: "8px" }}>
-        Encuadrar imagen <span style={{ fontWeight: 400, textTransform: "none", letterSpacing: "0.03em", color: "#9A8E84" }}>— arrastra el recuadro</span>
-      </p>
-      <div
-        ref={containerRef}
-        style={{ position: "relative", cursor: "crosshair", userSelect: "none", overflow: "hidden", borderRadius: "6px", border: "1px solid #DDD0C4" }}
-        onClick={handleInteraction}
-        onMouseMove={(e) => { if (e.buttons === 1) handleInteraction(e); }}
-      >
-        <img src={imageUrl} onLoad={onLoad} style={{ width: "100%", display: "block" }} alt="encuadre" />
-        {dims && (
-          <>
-            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: boxTop, background: "rgba(0,0,0,0.6)", pointerEvents: "none" }} />
-            <div style={{ position: "absolute", top: boxTop + dims.cropH, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.6)", pointerEvents: "none" }} />
-            <div style={{ position: "absolute", top: boxTop, left: 0, width: boxLeft, height: dims.cropH, background: "rgba(0,0,0,0.6)", pointerEvents: "none" }} />
-            <div style={{ position: "absolute", top: boxTop, left: boxLeft + dims.cropW, right: 0, height: dims.cropH, background: "rgba(0,0,0,0.6)", pointerEvents: "none" }} />
-            <div style={{ position: "absolute", left: boxLeft, top: boxTop, width: dims.cropW, height: dims.cropH, border: "2px solid #C9A84C", boxSizing: "border-box", pointerEvents: "none" }} />
-          </>
-        )}
-      </div>
-      <p style={{ fontSize: "11px", color: "#9A8E84", marginTop: "6px" }}>
-        {xPct}% horizontal · {yPct}% vertical
-      </p>
-    </div>
-  );
-}
-
 const inputStyle = (hasError) => ({
   width: "100%", padding: "11px 14px",
   background: "#FFFFFF", border: `1px solid ${hasError ? "#B42318" : "#DDD0C4"}`,
@@ -83,7 +19,7 @@ const labelStyle = {
 };
 
 function BookForm({ initialData, onSubmit, loading, submitText, onCancel }) {
-  const [formData, setFormData] = useState({ title: "", description: "", cita: "", publicationDate: "", status: "DRAFT", imageUrl: "", imagePosition: "50% 50%", link: "", showOnHome: false, ...initialData });
+  const [formData, setFormData] = useState({ title: "", description: "", cita: "", publicationDate: "", status: "DRAFT", imageUrl: "", link: "", showOnHome: false, ...initialData });
   const [uploading, setUploading] = useState(false);
   const [preview, setPreview] = useState(initialData?.imageUrl || null);
   const [errors, setErrors] = useState({});
@@ -188,28 +124,27 @@ function BookForm({ initialData, onSubmit, loading, submitText, onCancel }) {
 
       <div>
         <label style={labelStyle}>Imagen</label>
-        <label style={{
-          display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
-          border: `2px dashed ${errors.imageUrl ? "#B42318" : "#DDD0C4"}`,
-          borderRadius: "8px", padding: "24px", cursor: "pointer",
-          transition: "all 0.2s ease", background: "#FEFCF8",
-        }}
-          onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#7b1e2b"; e.currentTarget.style.background = "#FDF5EE"; }}
-          onMouseLeave={(e) => { e.currentTarget.style.borderColor = errors.imageUrl ? "#B42318" : "#DDD0C4"; e.currentTarget.style.background = "#FEFCF8"; }}
-        >
-          <PhotoIcon style={{ width: "26px", height: "26px", color: "#7b1e2b", marginBottom: "7px", opacity: 0.7 }} />
-          <span style={{ fontSize: "13px", color: "#6B5848" }}>{uploading ? "Subiendo..." : preview ? "Cambiar imagen" : "Seleccionar imagen"}</span>
-          <span style={{ fontSize: "11px", color: "#9A8E84", marginTop: "3px" }}>JPG · PNG · WEBP</span>
-          <input type="file" accept="image/*" onChange={handleImageUpload} style={{ display: "none" }} disabled={uploading} />
-        </label>
+        <div style={{ display: "flex", gap: "12px", alignItems: "stretch" }}>
+          <label style={{
+            flex: 1,
+            display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+            border: `2px dashed ${errors.imageUrl ? "#B42318" : "#DDD0C4"}`,
+            borderRadius: "8px", padding: "24px", cursor: "pointer",
+            transition: "all 0.2s ease", background: "#FEFCF8",
+          }}
+            onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#7b1e2b"; e.currentTarget.style.background = "#FDF5EE"; }}
+            onMouseLeave={(e) => { e.currentTarget.style.borderColor = errors.imageUrl ? "#B42318" : "#DDD0C4"; e.currentTarget.style.background = "#FEFCF8"; }}
+          >
+            <PhotoIcon style={{ width: "26px", height: "26px", color: "#7b1e2b", marginBottom: "7px", opacity: 0.7 }} />
+            <span style={{ fontSize: "13px", color: "#6B5848" }}>{uploading ? "Subiendo..." : preview ? "Cambiar imagen" : "Seleccionar imagen"}</span>
+            <span style={{ fontSize: "11px", color: "#9A8E84", marginTop: "3px" }}>JPG · PNG · WEBP</span>
+            <input type="file" accept="image/*" onChange={handleImageUpload} style={{ display: "none" }} disabled={uploading} />
+          </label>
+          {preview && (
+            <img src={preview} alt="Vista previa" style={{ width: "90px", height: "auto", objectFit: "cover", borderRadius: "6px", border: "1px solid #DDD0C4", flexShrink: 0 }} />
+          )}
+        </div>
         {errors.imageUrl && <p style={{ display: "flex", alignItems: "center", gap: "4px", marginTop: "5px", fontSize: "12px", color: "#B42318" }}><ExclamationCircleIcon style={{ width: "13px", height: "13px" }} />{errors.imageUrl}</p>}
-        {preview && (
-          <ImageCropSelector
-            imageUrl={preview}
-            value={formData.imagePosition}
-            onChange={(pos) => setFormData((prev) => ({ ...prev, imagePosition: pos }))}
-          />
-        )}
       </div>
 
       <div>
@@ -383,7 +318,7 @@ export default function BooksList() {
               )}
               <div style={{ padding: "14px" }}>
                 <p style={{ fontSize: "13px", color: "#1A1410", fontWeight: 500, marginBottom: "3px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{item.title}</p>
-                <p style={{ fontSize: "11px", color: "#9A8E84", marginBottom: "8px" }}>{item.publicationDate}</p>
+                <p style={{ fontSize: "11px", color: "#9A8E84", marginBottom: "8px" }}>{item.publicationDate ? new Date(item.publicationDate).toLocaleDateString("es-ES", { day: "2-digit", month: "2-digit", year: "numeric" }) : "—"}</p>
                 <div style={{ display: "flex", gap: "6px", flexWrap: "wrap", marginBottom: "10px" }}>
                   <span style={{ fontSize: "9px", letterSpacing: "0.12em", textTransform: "uppercase", padding: "2px 8px", borderRadius: "4px", background: item.status === "PUBLISHED" ? "#EBF7F0" : "#F5EFE8", color: item.status === "PUBLISHED" ? "#2D6B4A" : "#7A6050", border: `1px solid ${item.status === "PUBLISHED" ? "#A8D5B5" : "#DDD0C4"}`, fontWeight: 500 }}>
                     {item.status === "PUBLISHED" ? "Publicado" : "Borrador"}

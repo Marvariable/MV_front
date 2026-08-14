@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react"
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useNavigate, useLocation } from "react-router-dom"
 import "./Navbar.css"
 import logoMar from "../assets/logomar.jpg"
 
@@ -34,6 +34,7 @@ export default function Navbar() {
   const inputRef  = useRef(null)
   const timerRef  = useRef(null)
   const navigate  = useNavigate()
+  const { pathname } = useLocation()
 
   useEffect(() => {
     if (searchOpen) {
@@ -106,6 +107,22 @@ export default function Navbar() {
                   d="M21 21l-4.35-4.35m1.85-5.15a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
               </svg>
             </button>
+            <a href="#" target="_blank" rel="noopener noreferrer"
+              aria-label="Blog" className="navbar-icon-btn">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                strokeWidth="1.8" stroke="currentColor" width="20" height="20">
+                <path strokeLinecap="round" strokeLinejoin="round"
+                  d="M4 11a9 9 0 0 1 9 9M4 4a16 16 0 0 1 16 16" />
+                <circle cx="5" cy="19" r="1.5" fill="currentColor" stroke="none" />
+              </svg>
+            </a>
+            <a href="#" target="_blank" rel="noopener noreferrer"
+              aria-label="Patreon" className="navbar-icon-btn">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
+                <circle cx="15" cy="9.5" r="5.5" fill="currentColor" />
+                <rect x="3" y="3" width="3.5" height="18" fill="currentColor" />
+              </svg>
+            </a>
           </div>
         </div>
 
@@ -116,7 +133,7 @@ export default function Navbar() {
             {menuItems.map((item) =>
               item.dropdown ? (
                 <li key={item.label} className="nav-dropdown">
-                  <span className="nav-dropdown-trigger navbar-link">{item.label}</span>
+                  <span className={`nav-dropdown-trigger navbar-link${item.dropdown.some(sub => sub.path === pathname) ? " active" : ""}`}>{item.label}</span>
                   <div className="nav-dropdown-menu">
                     {item.dropdown.map((sub) => (
                       <Link key={sub.path} to={sub.path} className="nav-dropdown-item">
@@ -127,7 +144,7 @@ export default function Navbar() {
                 </li>
               ) : (
                 <li key={item.label}>
-                  <Link to={item.path} className="navbar-link">
+                  <Link to={item.path} className={`navbar-link${item.path === pathname ? " active" : ""}`}>
                     {item.label}
                   </Link>
                 </li>

@@ -71,22 +71,8 @@ export default function Contact() {
           <div className="contact-art-info">
             <div className="contact-info-item">
               <div className="contact-info-content">
-                <span className="contact-info-label">Dirección</span>
-                <p>Oe8 y Mañosca, Quito, Pichincha 17509, Ecuador</p>
-              </div>
-            </div>
-
-            <div className="contact-info-item">
-              <div className="contact-info-content">
                 <span className="contact-info-label">Correo</span>
                 <a href="mailto:isidrolu@gmail.com">isidrolu@gmail.com</a>
-              </div>
-            </div>
-
-            <div className="contact-info-item">
-              <div className="contact-info-content">
-                <span className="contact-info-label">Teléfono</span>
-                <a href="tel:+15555551234">(555) 555 1234</a>
               </div>
             </div>
           </div>

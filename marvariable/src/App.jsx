@@ -18,6 +18,7 @@ import VisualArtsList from "./pages/admin/VisualArtsList";
 import CreatePublication from "./pages/admin/CreatePublication";
 import EditPublication from "./pages/admin/EditPublication";
 import BooksList from "./pages/admin/BooksList";
+import AuthorSettings from "./pages/admin/AuthorSettings";
 
 function App() {
   return (
@@ -45,6 +46,7 @@ function App() {
           <Route path="arte-digital" element={<VisualArtsList category="ARTE_DIGITAL" title="Arte Digital" />} />
           <Route path="arte-manual" element={<VisualArtsList category="ARTE_MANUAL" title="Arte Plástico" />} />
           <Route path="libros" element={<BooksList />} />
+          <Route path="autor" element={<AuthorSettings />} />
         </Route>
       </Route>
     </Routes>

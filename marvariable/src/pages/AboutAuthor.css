@@ -1,3 +1,25 @@
+.author-cv-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: 28px;
+  margin-left: 22rem;
+  font-family: 'Cinzel', serif;
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: #f0ece8;
+  text-decoration: none;
+  background: #1a1410;
+  padding: 9px 16px;
+  transition: background 0.2s ease;
+}
+
+.author-cv-link:hover {
+  background: #7b1e2b;
+}
+
 .author-cinema-page {
   position: relative;
   min-height: 100vh;

@@ -6,6 +6,7 @@ import {
   ComputerDesktopIcon,
   PaintBrushIcon,
   BookOpenIcon,
+  UserIcon,
 } from "@heroicons/react/24/outline";
 
 function NavLink({ to, icon: Icon, label, exact = false }) {
@@ -121,6 +122,9 @@ export default function AdminLayout() {
 
           <SectionLabel label="Colección" />
           <NavLink to="/admin/libros" icon={BookOpenIcon} label="Libros" />
+
+          <SectionLabel label="Autor" />
+          <NavLink to="/admin/autor" icon={UserIcon} label="CV del autor" />
         </nav>
 
         <div style={{

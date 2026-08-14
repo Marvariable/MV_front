@@ -12,11 +12,7 @@ export default function Footer() {
         {/* Col 1 — Contacto */}
         <div className="footer-col">
           <span className="footer-col-label">Contacto</span>
-          <span className="footer-city">Quito</span>
-          <span className="footer-address">Oe8 y Mañosca</span>
-          <span className="footer-address">Pichincha 17509, Ecuador</span>
           <a href="mailto:isidrolu@gmail.com" className="footer-email">isidrolu@gmail.com</a>
-          <a href="tel:+15555551234" className="footer-email">(555) 555 1234</a>
           <Link to="/contact" className="footer-contact-btn">Escribir →</Link>
         </div>
 

@@ -58,8 +58,8 @@ export default function Books() {
         <p className="pub-empty">No hay libros publicados todavía.</p>
       ) : (
         <div style={{ display: "flex", flexDirection: "column", gap: "20px", width: "100%", padding: "0 48px 80px" }}>
-          {books.map((book, index) => (
-            <motion.article
+          {books.map((book, index) => {
+            return (<motion.article
               key={book.id}
               id={`book-${book.id}`}
               initial={{ opacity: 0, y: 40 }}
@@ -77,10 +77,14 @@ export default function Books() {
             >
               {/* Image */}
               <div style={{ position: "relative", overflow: "hidden", minHeight: "260px" }}>
-                <img
-                  src={book.imageUrl || ""}
-                  alt={book.title}
-                  style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: book.imagePosition || "center", display: "block", transition: "transform 0.6s ease" }}
+                <div
+                  style={{
+                    position: "absolute", inset: 0,
+                    backgroundImage: `url(${book.imageUrl || ""})`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                    transition: "transform 0.6s ease",
+                  }}
                   onMouseEnter={e => { e.currentTarget.style.transform = "scale(1.06)"; }}
                   onMouseLeave={e => { e.currentTarget.style.transform = "scale(1)"; }}
                 />
@@ -134,8 +138,8 @@ export default function Books() {
                   )}
                 </div>
               </div>
-            </motion.article>
-          ))}
+            </motion.article>);
+          })}
         </div>
       )}
     </section>

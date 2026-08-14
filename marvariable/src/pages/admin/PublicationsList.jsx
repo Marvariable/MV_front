@@ -207,7 +207,7 @@ export default function PublicationsList() {
                     <td style={{ padding: "14px 18px", fontSize: "14px", color: "#1A1410", maxWidth: "260px" }}>
                       <span style={{ display: "block", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{pub.title}</span>
                     </td>
-                    <td style={{ padding: "14px 18px", fontSize: "13px", color: "#6B5848", whiteSpace: "nowrap" }}>{pub.publicationDate}</td>
+                    <td style={{ padding: "14px 18px", fontSize: "13px", color: "#6B5848", whiteSpace: "nowrap" }}>{pub.publicationDate ? new Date(pub.publicationDate).toLocaleDateString("es-ES", { day: "2-digit", month: "2-digit", year: "numeric" }) : "—"}</td>
                     <td style={{ padding: "14px 18px", fontSize: "13px", color: "#6B5848" }}>
                       {{ TEORIA: "Teoría", NARRATIVA: "Narrativa", TEATRO: "Teatro" }[pub.section] || pub.section}
                     </td>

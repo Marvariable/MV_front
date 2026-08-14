@@ -1,104 +1,9 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { PhotoIcon, ExclamationCircleIcon, DocumentArrowUpIcon } from "@heroicons/react/24/outline";
 
 const CLOUDINARY_CLOUD = "de96ah1mw";
 const CLOUDINARY_PRESET = "cristina";
 const CLOUDINARY_PRESET_DOCS = "cristina_docs";
-
-function ImageCropSelector({ imageUrl, value, onChange }) {
-  const containerRef = useRef(null);
-  const [dims, setDims] = useState(null);
-  const isDragging = useRef(false);
-  const dragOrigin = useRef({ mouseX: 0, mouseY: 0, boxLeft: 0, boxTop: 0 });
-  const CARD_RATIO = 260 / 200;
-
-  const parts = (value || "50% 50%").split(" ");
-  const xPct = parseFloat(parts[0]) || 50;
-  const yPct = parseFloat(parts[1]) || 50;
-
-  const boxLeft = dims ? (xPct / 100) * dims.maxLeft : 0;
-  const boxTop  = dims ? (yPct / 100) * dims.maxTop  : 0;
-
-  function onLoad(e) {
-    if (!containerRef.current) return;
-    const cw = containerRef.current.offsetWidth;
-    const ch = Math.round(cw * e.target.naturalHeight / e.target.naturalWidth);
-    let cropW = Math.round(cw * 0.42);
-    let cropH = Math.round(cropW * CARD_RATIO);
-    if (cropH > ch) { cropH = ch; cropW = Math.round(cropH / CARD_RATIO); }
-    setDims({ maxLeft: cw - cropW, maxTop: ch - cropH, cropW, cropH });
-  }
-
-  function applyPosition(left, top, d) {
-    const newX = d.maxLeft > 0 ? Math.round((left / d.maxLeft) * 100) : 50;
-    const newY = d.maxTop  > 0 ? Math.round((top  / d.maxTop)  * 100) : 50;
-    onChange(`${newX}% ${newY}%`);
-  }
-
-  function handleContainerClick(e) {
-    if (isDragging.current || !dims) return;
-    const rect = containerRef.current.getBoundingClientRect();
-    const left = Math.max(0, Math.min(dims.maxLeft, e.clientX - rect.left - dims.cropW / 2));
-    const top  = Math.max(0, Math.min(dims.maxTop,  e.clientY - rect.top  - dims.cropH / 2));
-    applyPosition(left, top, dims);
-  }
-
-  function handleBoxMouseDown(e) {
-    e.stopPropagation();
-    e.preventDefault();
-    if (!dims) return;
-    isDragging.current = true;
-    dragOrigin.current = { mouseX: e.clientX, mouseY: e.clientY, boxLeft, boxTop };
-
-    function onMouseMove(ev) {
-      if (!isDragging.current) return;
-      const dx = ev.clientX - dragOrigin.current.mouseX;
-      const dy = ev.clientY - dragOrigin.current.mouseY;
-      const left = Math.max(0, Math.min(dims.maxLeft, dragOrigin.current.boxLeft + dx));
-      const top  = Math.max(0, Math.min(dims.maxTop,  dragOrigin.current.boxTop  + dy));
-      applyPosition(left, top, dims);
-    }
-
-    function onMouseUp() {
-      isDragging.current = false;
-      document.removeEventListener("mousemove", onMouseMove);
-      document.removeEventListener("mouseup", onMouseUp);
-    }
-
-    document.addEventListener("mousemove", onMouseMove);
-    document.addEventListener("mouseup", onMouseUp);
-  }
-
-  return (
-    <div style={{ marginTop: "14px" }}>
-      <p style={{ fontSize: "10px", letterSpacing: "0.2em", textTransform: "uppercase", color: "#5A4538", fontWeight: 600, marginBottom: "8px" }}>
-        Encuadrar imagen <span style={{ fontWeight: 400, textTransform: "none", letterSpacing: "0.03em", color: "#9A8E84" }}>— arrastra el recuadro dorado</span>
-      </p>
-      <div
-        ref={containerRef}
-        style={{ position: "relative", userSelect: "none", overflow: "hidden", borderRadius: "6px", border: "1px solid #DDD0C4", cursor: "crosshair" }}
-        onClick={handleContainerClick}
-      >
-        <img src={imageUrl} onLoad={onLoad} style={{ width: "100%", display: "block" }} alt="encuadre" />
-        {dims && (
-          <>
-            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: boxTop, background: "rgba(0,0,0,0.6)", pointerEvents: "none" }} />
-            <div style={{ position: "absolute", top: boxTop + dims.cropH, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.6)", pointerEvents: "none" }} />
-            <div style={{ position: "absolute", top: boxTop, left: 0, width: boxLeft, height: dims.cropH, background: "rgba(0,0,0,0.6)", pointerEvents: "none" }} />
-            <div style={{ position: "absolute", top: boxTop, left: boxLeft + dims.cropW, right: 0, height: dims.cropH, background: "rgba(0,0,0,0.6)", pointerEvents: "none" }} />
-            <div
-              onMouseDown={handleBoxMouseDown}
-              style={{ position: "absolute", left: boxLeft, top: boxTop, width: dims.cropW, height: dims.cropH, border: "2px solid #C9A84C", boxSizing: "border-box", cursor: "move" }}
-            />
-          </>
-        )}
-      </div>
-      <p style={{ fontSize: "11px", color: "#9A8E84", marginTop: "6px" }}>
-        {xPct}% horizontal · {yPct}% vertical
-      </p>
-    </div>
-  );
-}
 
 function validate(formData) {
   const errors = {};
@@ -146,7 +51,7 @@ const ErrorMsg = ({ text }) =>
 export default function PublicationForm({
   initialData = {
     title: "", description: "", cita: "", publicationDate: "", imageUrl: "", fileUrl: "",
-    status: "DRAFT", link: "", section: "TEORIA", showInHome: false, imagePosition: "50% 50%",
+    status: "DRAFT", link: "", section: "TEORIA", showInHome: false,
   },
   onSubmit,
   loading = false,
@@ -284,28 +189,27 @@ export default function PublicationForm({
         {/* Image upload */}
         <div style={{ gridColumn: "1 / -1" }}>
           <label style={labelStyle}>Imagen</label>
-          <label style={{
-            display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
-            border: `2px dashed ${errors.imageUrl ? "#B42318" : "#DDD0C4"}`,
-            borderRadius: "8px", padding: "28px", cursor: "pointer",
-            transition: "all 0.2s ease", background: "#FEFCF8",
-          }}
-            onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#7b1e2b"; e.currentTarget.style.background = "#FDF5EE"; }}
-            onMouseLeave={(e) => { e.currentTarget.style.borderColor = errors.imageUrl ? "#B42318" : "#DDD0C4"; e.currentTarget.style.background = "#FEFCF8"; }}
-          >
-            <PhotoIcon style={{ width: "28px", height: "28px", color: "#7b1e2b", marginBottom: "8px", opacity: 0.7 }} />
-            <span style={{ fontSize: "13px", color: "#6B5848" }}>{uploading ? "Subiendo..." : preview ? "Cambiar imagen" : "Seleccionar imagen"}</span>
-            <span style={{ fontSize: "11px", color: "#9A8E84", marginTop: "4px" }}>JPG · PNG · WEBP</span>
-            <input type="file" accept="image/*" onChange={handleImageUpload} style={{ display: "none" }} disabled={uploading} />
-          </label>
+          <div style={{ display: "flex", gap: "12px", alignItems: "stretch" }}>
+            <label style={{
+              flex: 1,
+              display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+              border: `2px dashed ${errors.imageUrl ? "#B42318" : "#DDD0C4"}`,
+              borderRadius: "8px", padding: "28px", cursor: "pointer",
+              transition: "all 0.2s ease", background: "#FEFCF8",
+            }}
+              onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#7b1e2b"; e.currentTarget.style.background = "#FDF5EE"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.borderColor = errors.imageUrl ? "#B42318" : "#DDD0C4"; e.currentTarget.style.background = "#FEFCF8"; }}
+            >
+              <PhotoIcon style={{ width: "28px", height: "28px", color: "#7b1e2b", marginBottom: "8px", opacity: 0.7 }} />
+              <span style={{ fontSize: "13px", color: "#6B5848" }}>{uploading ? "Subiendo..." : preview ? "Cambiar imagen" : "Seleccionar imagen"}</span>
+              <span style={{ fontSize: "11px", color: "#9A8E84", marginTop: "4px" }}>JPG · PNG · WEBP</span>
+              <input type="file" accept="image/*" onChange={handleImageUpload} style={{ display: "none" }} disabled={uploading} />
+            </label>
+            {preview && (
+              <img src={preview} alt="Vista previa" style={{ width: "90px", height: "auto", objectFit: "cover", borderRadius: "6px", border: "1px solid #DDD0C4", flexShrink: 0 }} />
+            )}
+          </div>
           <ErrorMsg text={errors.imageUrl} />
-          {preview && (
-            <ImageCropSelector
-              imageUrl={preview}
-              value={formData.imagePosition}
-              onChange={(pos) => setFormData((prev) => ({ ...prev, imagePosition: pos }))}
-            />
-          )}
         </div>
 
         {/* File upload */}
