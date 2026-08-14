@@ -1,12 +1,6 @@
-const BASE_URL = "http://localhost:8080/api/visual-arts";
+import { apiFetch } from "./apiClient";
 
-function authHeaders() {
-  const token = localStorage.getItem("token");
-  return {
-    "Content-Type": "application/json",
-    ...(token ? { Authorization: token } : {}),
-  };
-}
+const BASE_URL = "http://localhost:8080/api/visual-arts";
 
 export async function getVisualArts(category, showOnHome) {
   const params = new URLSearchParams();
@@ -26,9 +20,8 @@ export async function getVisualArtById(id) {
 }
 
 export async function createVisualArt(data) {
-  const response = await fetch(BASE_URL, {
+  const response = await apiFetch(BASE_URL, {
     method: "POST",
-    headers: authHeaders(),
     body: JSON.stringify(data),
   });
   if (!response.ok) {
@@ -40,9 +33,8 @@ export async function createVisualArt(data) {
 }
 
 export async function updateVisualArt(id, data) {
-  const response = await fetch(`${BASE_URL}/${id}`, {
+  const response = await apiFetch(`${BASE_URL}/${id}`, {
     method: "PUT",
-    headers: authHeaders(),
     body: JSON.stringify(data),
   });
   if (!response.ok) {
@@ -54,9 +46,8 @@ export async function updateVisualArt(id, data) {
 }
 
 export async function deleteVisualArt(id) {
-  const response = await fetch(`${BASE_URL}/${id}`, {
+  const response = await apiFetch(`${BASE_URL}/${id}`, {
     method: "DELETE",
-    headers: authHeaders(),
   });
   if (!response.ok) throw new Error("Error al eliminar");
   return true;

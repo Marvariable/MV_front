@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import banner2 from "../assets/banner2.jpg";
+import { setToken } from "../services/apiClient";
 import "./AdminRegister.css";
 
 export default function AdminRegister() {
@@ -46,14 +47,13 @@ export default function AdminRegister() {
       const text = await response.text();
       const data = text ? JSON.parse(text) : {};
 
-      console.log("Status:", response.status, "Body:", data);
-
       if (!response.ok) {
         throw new Error(data.message || "Error al iniciar sesión");
       }
 
-      if (data.token) {
-        localStorage.setItem("token", data.token);
+      const token = data.token || response.headers.get("Authorization");
+      if (token) {
+        setToken(token);
       }
       navigate("/admin/publicaciones");
     } catch (error) {
@@ -150,9 +150,6 @@ export default function AdminRegister() {
                   <span>Recordarme</span>
                 </label>
 
-                <a href="#" className="admin-forgot-password">
-                  ¿Olvidaste la contraseña?
-                </a>
               </div>
 
               <div className="admin-register-actions">

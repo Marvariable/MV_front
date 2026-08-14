@@ -1,3 +1,5 @@
+import { apiFetch } from "./apiClient";
+
 const BASE_URL = "http://localhost:8080/api/publications";
 
 export async function getPublications(filters = {}) {
@@ -35,11 +37,8 @@ export async function getPublicationById(id) {
 }
 
 export async function createPublication(publicationData) {
-  const response = await fetch(BASE_URL, {
+  const response = await apiFetch(BASE_URL, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
     body: JSON.stringify(publicationData),
   });
 
@@ -54,11 +53,8 @@ export async function createPublication(publicationData) {
 }
 
 export async function updatePublication(id, publicationData) {
-  const response = await fetch(`${BASE_URL}/${id}`, {
+  const response = await apiFetch(`${BASE_URL}/${id}`, {
     method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
     body: JSON.stringify(publicationData),
   });
 
@@ -71,7 +67,7 @@ export async function updatePublication(id, publicationData) {
 }
 
 export async function deletePublication(id) {
-  const response = await fetch(`${BASE_URL}/${id}`, {
+  const response = await apiFetch(`${BASE_URL}/${id}`, {
     method: "DELETE",
   });
 

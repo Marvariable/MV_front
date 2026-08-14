@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { DocumentArrowUpIcon, CheckCircleIcon, ExclamationCircleIcon } from "@heroicons/react/24/outline";
+import { apiFetch } from "../../services/apiClient";
 
 const CLOUDINARY_CLOUD = "de96ah1mw";
 const CLOUDINARY_PRESET_DOCS = "cristina_docs";
@@ -45,10 +46,8 @@ export default function AuthorSettings() {
     setError("");
     setSuccess("");
     try {
-      const token = localStorage.getItem("token");
-      const res = await fetch(API, {
+      const res = await apiFetch(API, {
         method: "PUT",
-        headers: { "Content-Type": "application/json", Authorization: token },
         body: JSON.stringify({ cvUrl }),
       });
       if (!res.ok) throw new Error();
@@ -65,10 +64,8 @@ export default function AuthorSettings() {
     setSaving(true);
     setError("");
     try {
-      const token = localStorage.getItem("token");
-      await fetch(API, {
+      await apiFetch(API, {
         method: "PUT",
-        headers: { "Content-Type": "application/json", Authorization: token },
         body: JSON.stringify({ cvUrl: null }),
       });
       setCvUrl("");

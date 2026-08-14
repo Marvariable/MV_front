@@ -1,12 +1,6 @@
-const BASE_URL = "http://localhost:8080/api/books";
+import { apiFetch } from "./apiClient";
 
-function authHeaders() {
-  const token = localStorage.getItem("token");
-  return {
-    "Content-Type": "application/json",
-    ...(token ? { Authorization: token } : {}),
-  };
-}
+const BASE_URL = "http://localhost:8080/api/books";
 
 export async function getBooks(showOnHome) {
   const params = new URLSearchParams();
@@ -19,9 +13,8 @@ export async function getBooks(showOnHome) {
 }
 
 export async function createBook(data) {
-  const response = await fetch(BASE_URL, {
+  const response = await apiFetch(BASE_URL, {
     method: "POST",
-    headers: authHeaders(),
     body: JSON.stringify(data),
   });
   if (!response.ok) {
@@ -33,9 +26,8 @@ export async function createBook(data) {
 }
 
 export async function updateBook(id, data) {
-  const response = await fetch(`${BASE_URL}/${id}`, {
+  const response = await apiFetch(`${BASE_URL}/${id}`, {
     method: "PUT",
-    headers: authHeaders(),
     body: JSON.stringify(data),
   });
   if (!response.ok) {
@@ -47,9 +39,8 @@ export async function updateBook(id, data) {
 }
 
 export async function deleteBook(id) {
-  const response = await fetch(`${BASE_URL}/${id}`, {
+  const response = await apiFetch(`${BASE_URL}/${id}`, {
     method: "DELETE",
-    headers: authHeaders(),
   });
   if (!response.ok) throw new Error("Error al eliminar");
   return true;

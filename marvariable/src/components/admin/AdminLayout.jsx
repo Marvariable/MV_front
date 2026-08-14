@@ -1,4 +1,4 @@
-import { Link, Outlet, useLocation } from "react-router-dom";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import {
   HomeIcon,
   DocumentTextIcon,
@@ -7,7 +7,9 @@ import {
   PaintBrushIcon,
   BookOpenIcon,
   UserIcon,
+  ArrowLeftOnRectangleIcon,
 } from "@heroicons/react/24/outline";
+import { clearToken } from "../../services/apiClient";
 
 function NavLink({ to, icon: Icon, label, exact = false }) {
   const { pathname } = useLocation();
@@ -67,6 +69,13 @@ function SectionLabel({ label }) {
 }
 
 export default function AdminLayout() {
+  const navigate = useNavigate();
+
+  function handleLogout() {
+    clearToken();
+    navigate("/admin-register", { replace: true });
+  }
+
   return (
     <div style={{ minHeight: "100vh", display: "flex", background: "#F0EBE3" }}>
 
@@ -131,6 +140,31 @@ export default function AdminLayout() {
           padding: "20px 24px",
           borderTop: "1px solid rgba(255,255,255,0.15)",
         }}>
+          <button
+            type="button"
+            onClick={handleLogout}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "10px",
+              width: "100%",
+              padding: "8px 0",
+              marginBottom: "14px",
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+              fontSize: "10px",
+              letterSpacing: "0.12em",
+              textTransform: "uppercase",
+              color: "rgba(255,255,255,0.75)",
+              transition: "color 0.2s ease",
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.color = "#FFFFFF"; }}
+            onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(255,255,255,0.75)"; }}
+          >
+            <ArrowLeftOnRectangleIcon style={{ width: "14px", height: "14px" }} />
+            Cerrar sesión
+          </button>
           <p style={{
             fontSize: "8px",
             letterSpacing: "0.3em",
