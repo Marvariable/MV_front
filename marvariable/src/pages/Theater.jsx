@@ -3,6 +3,8 @@ import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { motion } from "motion/react";
 import "./Theater.css";
 import banner80 from "../assets/banner80.jpg";
+import { sortByDateDesc } from "../utils/sort";
+import { API_BASE_URL } from "../config/api";
 
 export default function Theater() {
   const [publications, setPublications] = useState([]);
@@ -28,7 +30,7 @@ export default function Theater() {
     async function loadTheaterPublications() {
       try {
         const response = await fetch(
-          "http://localhost:8080/api/publications/section/TEATRO"
+          `${API_BASE_URL}/api/publications/section/TEATRO`
         );
 
         if (!response.ok) {
@@ -36,7 +38,7 @@ export default function Theater() {
         }
 
         const data = await response.json();
-        setPublications(data);
+        setPublications(sortByDateDesc(data));
       } catch (err) {
         console.error("Error al cargar teatro:", err);
         setError("No se pudieron cargar los textos de teatro");
@@ -129,7 +131,7 @@ export default function Theater() {
                 <div
                   style={{
                     position: "absolute", inset: 0,
-                    backgroundImage: `url(${publication.imageUrl ? (publication.imageUrl.startsWith("http") ? publication.imageUrl : `http://localhost:8080${publication.imageUrl}`) : ""})`,
+                    backgroundImage: `url(${publication.imageUrl ? (publication.imageUrl.startsWith("http") ? publication.imageUrl : `${API_BASE_URL}${publication.imageUrl}`) : ""})`,
                     backgroundSize: "cover",
                     backgroundPosition: "center",
                     transition: "transform 0.6s ease",

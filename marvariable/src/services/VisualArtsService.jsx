@@ -1,6 +1,8 @@
 import { apiFetch } from "./apiClient";
+import { sortByDateDesc } from "../utils/sort";
+import { API_BASE_URL } from "../config/api";
 
-const BASE_URL = "http://localhost:8080/api/visual-arts";
+const BASE_URL = `${API_BASE_URL}/api/visual-arts`;
 
 export async function getVisualArts(category, showOnHome) {
   const params = new URLSearchParams();
@@ -10,7 +12,7 @@ export async function getVisualArts(category, showOnHome) {
   const url = query ? `${BASE_URL}?${query}` : BASE_URL;
   const response = await fetch(url);
   if (!response.ok) throw new Error("Error al obtener las artes visuales");
-  return response.json();
+  return sortByDateDesc(await response.json());
 }
 
 export async function getVisualArtById(id) {

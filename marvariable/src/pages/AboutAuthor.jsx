@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import "./AboutAuthor.css";
 import autora from "../assets/autor.png";
+import { API_BASE_URL } from "../config/api";
 
 export default function AboutAuthor() {
   const [cvUrl, setCvUrl] = useState(null);
 
   useEffect(() => {
-    fetch("http://localhost:8080/api/settings/cv")
+    fetch(`${API_BASE_URL}/api/settings/cv`)
       .then(r => r.json())
       .then(data => { if (data.cvUrl) setCvUrl(data.cvUrl); })
       .catch(() => {});

@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { DocumentArrowUpIcon, CheckCircleIcon, ExclamationCircleIcon } from "@heroicons/react/24/outline";
 import { apiFetch } from "../../services/apiClient";
+import { API_BASE_URL } from "../../config/api";
 
 const CLOUDINARY_CLOUD = "de96ah1mw";
 const CLOUDINARY_PRESET_DOCS = "cristina_docs";
-const API = "http://localhost:8080/api/settings/cv";
+const API = `${API_BASE_URL}/api/settings/cv`;
 
 export default function AuthorSettings() {
   const [cvUrl, setCvUrl] = useState("");

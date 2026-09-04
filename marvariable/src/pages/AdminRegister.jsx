@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import banner2 from "../assets/banner2.jpg";
 import { setToken } from "../services/apiClient";
+import { API_BASE_URL } from "../config/api";
 import "./AdminRegister.css";
 
 export default function AdminRegister() {
@@ -33,7 +34,7 @@ export default function AdminRegister() {
     setMessage("");
 
     try {
-      const response = await fetch("http://localhost:8080/login", {
+      const response = await fetch(`${API_BASE_URL}/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

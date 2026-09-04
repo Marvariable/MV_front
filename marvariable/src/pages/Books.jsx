@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { motion } from "motion/react";
 import "./Publications.css";
 import banner80 from "../assets/banner80.jpg";
+import { sortByDateDesc } from "../utils/sort";
+import { API_BASE_URL } from "../config/api";
 
 export default function Books() {
   const [books, setBooks] = useState([]);
@@ -11,10 +13,10 @@ export default function Books() {
   useEffect(() => {
     async function loadBooks() {
       try {
-        const response = await fetch("http://localhost:8080/api/books");
+        const response = await fetch(`${API_BASE_URL}/api/books`);
         if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
         const data = await response.json();
-        setBooks(data);
+        setBooks(sortByDateDesc(data));
       } catch (err) {
         setError("No se pudieron cargar los libros");
       } finally {

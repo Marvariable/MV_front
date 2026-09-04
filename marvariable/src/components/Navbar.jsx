@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react"
 import { Link, useNavigate, useLocation } from "react-router-dom"
 import "./Navbar.css"
 import logoMar from "../assets/logomar.jpg"
+import { API_BASE_URL } from "../config/api"
 
 const menuItems = [
   { label: "LIBROS", path: "/libros" },
@@ -59,7 +60,7 @@ export default function Navbar() {
     timerRef.current = setTimeout(async () => {
       setLoading(true)
       try {
-        const res  = await fetch(`http://localhost:8080/api/publications?title=${encodeURIComponent(query)}`)
+        const res  = await fetch(`${API_BASE_URL}/api/publications?title=${encodeURIComponent(query)}`)
         const data = await res.json()
         setPublications(data)
       } catch {
@@ -92,13 +93,6 @@ export default function Navbar() {
           </Link>
 
           <div className="navbar-actions">
-            <Link to="/admin-register" className="navbar-icon-btn" aria-label="Admin">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                strokeWidth={1.5} stroke="currentColor" width="20" height="20">
-                <path strokeLinecap="round" strokeLinejoin="round"
-                  d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-              </svg>
-            </Link>
             <button type="button" aria-label="Buscar" className="navbar-icon-btn"
               onClick={() => setSearchOpen(true)}>
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -235,7 +229,7 @@ export default function Navbar() {
                       >
                         {pub.imageUrl && (
                           <img
-                            src={pub.imageUrl.startsWith("http") ? pub.imageUrl : `http://localhost:8080${pub.imageUrl}`}
+                            src={pub.imageUrl.startsWith("http") ? pub.imageUrl : `${API_BASE_URL}${pub.imageUrl}`}
                             alt={pub.title}
                             className="search-pub-img"
                           />

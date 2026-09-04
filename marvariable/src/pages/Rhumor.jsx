@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import "./Rhumor.css";
 import { getVisualArts } from "../services/VisualArtsService";
+import { API_BASE_URL } from "../config/api";
 
 export default function Rhumor({ category = "ARTE_DIGITAL" }) {
   const [images, setImages] = useState([]);
@@ -71,7 +72,7 @@ export default function Rhumor({ category = "ARTE_DIGITAL" }) {
               <div className="rhumor-frame">
                 <div className="rhumor-mat">
                   <img
-                    src={image.imageUrl?.startsWith("http") ? image.imageUrl : `http://localhost:8080${image.imageUrl}`}
+                    src={image.imageUrl?.startsWith("http") ? image.imageUrl : `${API_BASE_URL}${image.imageUrl}`}
                     alt={image.nombre}
                     className="rhumor-artwork-img"
                   />
@@ -120,7 +121,7 @@ export default function Rhumor({ category = "ARTE_DIGITAL" }) {
             >
               <div className="rhumor-lb-frame">
                 <img
-                  src={images[selectedIndex].imageUrl?.startsWith("http") ? images[selectedIndex].imageUrl : `http://localhost:8080${images[selectedIndex].imageUrl}`}
+                  src={images[selectedIndex].imageUrl?.startsWith("http") ? images[selectedIndex].imageUrl : `${API_BASE_URL}${images[selectedIndex].imageUrl}`}
                   alt={images[selectedIndex].nombre}
                   className="rhumor-lb-img"
                 />

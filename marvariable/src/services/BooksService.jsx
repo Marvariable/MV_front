@@ -1,6 +1,8 @@
 import { apiFetch } from "./apiClient";
+import { sortByDateDesc } from "../utils/sort";
+import { API_BASE_URL } from "../config/api";
 
-const BASE_URL = "http://localhost:8080/api/books";
+const BASE_URL = `${API_BASE_URL}/api/books`;
 
 export async function getBooks(showOnHome) {
   const params = new URLSearchParams();
@@ -9,7 +11,7 @@ export async function getBooks(showOnHome) {
   const url = query ? `${BASE_URL}?${query}` : BASE_URL;
   const response = await fetch(url);
   if (!response.ok) throw new Error("Error al obtener los libros");
-  return response.json();
+  return sortByDateDesc(await response.json());
 }
 
 export async function createBook(data) {

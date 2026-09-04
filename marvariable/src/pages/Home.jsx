@@ -6,6 +6,8 @@ import banner from "../assets/banner.jpg"
 import banner2 from "../assets/banner2.jpg"
 
 import banner5bg from "../assets/banner5.jpg"
+import { sortByDateDesc } from "../utils/sort"
+import { API_BASE_URL } from "../config/api"
 
 const sectionRoutes = {
   OBRAS_PUBLICADAS: "/libros",
@@ -38,15 +40,14 @@ export default function Home() {
   useEffect(() => {
     async function loadRecentTexts() {
       try {
-       const response = await fetch("http://localhost:8080/api/publications/home-selected")
+       const response = await fetch(`${API_BASE_URL}/api/publications/home-selected`)
 
         if (!response.ok) {
           throw new Error(`Error HTTP: ${response.status}`)
         }
 
         const data = await response.json()
-        console.log("Textos recientes desde backend:", data)
-        setRecentTexts(data)
+        setRecentTexts(sortByDateDesc(data))
       } catch (error) {
         console.error("Error cargando textos recientes:", error)
         setErrorRecentTexts("No se pudieron cargar los textos recientes")
@@ -61,15 +62,14 @@ export default function Home() {
   useEffect(() => {
     async function loadVisualArts() {
       try {
-        const response = await fetch("http://localhost:8080/api/visual-arts?showOnHome=true")
+        const response = await fetch(`${API_BASE_URL}/api/visual-arts?showOnHome=true`)
 
         if (!response.ok) {
           throw new Error(`Error HTTP: ${response.status}`)
         }
 
         const data = await response.json()
-        console.log("Artes visuales desde backend:", data)
-        setVisualArts(data)
+        setVisualArts(sortByDateDesc(data))
       } catch (error) {
         console.error("Error cargando artes visuales:", error)
         setErrorVisualArts("No se pudieron cargar las artes visuales")
@@ -84,10 +84,10 @@ export default function Home() {
   useEffect(() => {
     async function loadBooks() {
       try {
-        const response = await fetch("http://localhost:8080/api/books?showOnHome=true")
+        const response = await fetch(`${API_BASE_URL}/api/books?showOnHome=true`)
         if (!response.ok) throw new Error(`Error HTTP: ${response.status}`)
         const data = await response.json()
-        setBooks(data)
+        setBooks(sortByDateDesc(data))
       } catch (error) {
         console.error("Error cargando libros:", error)
       } finally {
@@ -137,7 +137,7 @@ export default function Home() {
                   <article className="recent-card">
                     <div className="recent-card-img-wrapper">
                       <img
-                        src={text.imageUrl?.startsWith("http") ? text.imageUrl : `http://localhost:8080${text.imageUrl}`}
+                        src={text.imageUrl?.startsWith("http") ? text.imageUrl : `${API_BASE_URL}${text.imageUrl}`}
                         alt={text.title}
                         className="recent-image"
                       />
@@ -255,13 +255,13 @@ export default function Home() {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.6, delay: index * 0.12, ease: "easeOut" }}
                 whileHover={{ y: -8, transition: { duration: 0.3 } }}
-                onClick={() => setLightbox({ src: art.imageUrl?.startsWith("http") ? art.imageUrl : `http://localhost:8080${art.imageUrl}`, title: art.nombre })}
+                onClick={() => setLightbox({ src: art.imageUrl?.startsWith("http") ? art.imageUrl : `${API_BASE_URL}${art.imageUrl}`, title: art.nombre })}
                 style={{ cursor: "pointer" }}
               >
                 <div className="gallery-frame">
                   <div className="gallery-mat">
                     <img
-                      src={art.imageUrl?.startsWith("http") ? art.imageUrl : `http://localhost:8080${art.imageUrl}`}
+                      src={art.imageUrl?.startsWith("http") ? art.imageUrl : `${API_BASE_URL}${art.imageUrl}`}
                       alt={art.nombre}
                       className="gallery-image"
                     />

@@ -3,6 +3,8 @@ import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { motion } from "motion/react";
 import "./Theory.css";
 import banner80 from "../assets/banner80.jpg";
+import { sortByDateDesc } from "../utils/sort";
+import { API_BASE_URL } from "../config/api";
 
 export default function Theory() {
   const [publications, setPublications] = useState([]);
@@ -28,7 +30,7 @@ export default function Theory() {
     async function loadTheoryPublications() {
       try {
         const response = await fetch(
-          "http://localhost:8080/api/publications/section/TEORIA"
+          `${API_BASE_URL}/api/publications/section/TEORIA`
         );
 
         if (!response.ok) {
@@ -36,7 +38,7 @@ export default function Theory() {
         }
 
         const data = await response.json();
-        setPublications(data);
+        setPublications(sortByDateDesc(data));
       } catch (err) {
         console.error("Error al cargar teoría:", err);
         setError("No se pudieron cargar los textos de teoría");
@@ -134,7 +136,7 @@ export default function Theory() {
                 <div
                   style={{
                     position: "absolute", inset: 0,
-                    backgroundImage: `url(${publication.imageUrl ? (publication.imageUrl.startsWith("http") ? publication.imageUrl : `http://localhost:8080${publication.imageUrl}`) : ""})`,
+                    backgroundImage: `url(${publication.imageUrl ? (publication.imageUrl.startsWith("http") ? publication.imageUrl : `${API_BASE_URL}${publication.imageUrl}`) : ""})`,
                     backgroundSize: "cover",
                     backgroundPosition: "center",
                     transition: "transform 0.6s ease",

@@ -1,6 +1,8 @@
 import { apiFetch } from "./apiClient";
+import { sortByDateDesc } from "../utils/sort";
+import { API_BASE_URL } from "../config/api";
 
-const BASE_URL = "http://localhost:8080/api/publications";
+const BASE_URL = `${API_BASE_URL}/api/publications`;
 
 export async function getPublications(filters = {}) {
   const params = new URLSearchParams();
@@ -23,7 +25,7 @@ export async function getPublications(filters = {}) {
     throw new Error("Error al obtener las publicaciones");
   }
 
-  return response.json();
+  return sortByDateDesc(await response.json());
 }
 
 export async function getPublicationById(id) {
@@ -85,7 +87,7 @@ export async function getPublicationsBySection(section) {
     throw new Error("Error al obtener publicaciones por sección");
   }
 
-  return response.json();
+  return sortByDateDesc(await response.json());
 }
 
 export async function getHomeSelectedPublications() {
@@ -95,5 +97,5 @@ export async function getHomeSelectedPublications() {
     throw new Error("Error al obtener publicaciones del home");
   }
 
-  return response.json();
+  return sortByDateDesc(await response.json());
 }

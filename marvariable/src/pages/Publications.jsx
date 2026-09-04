@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { motion } from "motion/react";
 import "./Publications.css";
+import { sortByDateDesc } from "../utils/sort";
+import { API_BASE_URL } from "../config/api";
 
 export default function Publications() {
   const [publications, setPublications] = useState([]);
@@ -11,11 +13,11 @@ export default function Publications() {
     async function loadPublishedWorks() {
       try {
         const response = await fetch(
-          "http://localhost:8080/api/publications/section/OBRAS_PUBLICADAS"
+          `${API_BASE_URL}/api/publications/section/OBRAS_PUBLICADAS`
         );
         if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
         const data = await response.json();
-        setPublications(data);
+        setPublications(sortByDateDesc(data));
       } catch (err) {
         setError("No se pudieron cargar las obras publicadas");
       } finally {
@@ -76,7 +78,7 @@ export default function Publications() {
                     publication.imageUrl
                       ? publication.imageUrl.startsWith("http")
                         ? publication.imageUrl
-                        : `http://localhost:8080${publication.imageUrl}`
+                        : `${API_BASE_URL}${publication.imageUrl}`
                       : ""
                   }
                   alt={publication.title}
